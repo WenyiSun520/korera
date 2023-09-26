@@ -1,11 +1,9 @@
 package com.itlize.korera.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.*;
 
 @Entity
 public class User {;
@@ -19,6 +17,9 @@ public class User {;
     private String password;
 
     private Date created_date;
+
+    @OneToMany(mappedBy="user")
+    private List<Project> project;
 
     public User() {
 

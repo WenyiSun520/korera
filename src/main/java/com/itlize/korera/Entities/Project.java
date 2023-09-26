@@ -23,7 +23,7 @@ public class Project {
     private Date lastModified;
 
     @ManyToOne
-    @JoinColumn(name="")
+    @JoinColumn(name="userID")
     private User user;
 
     @OneToMany(mappedBy="")
