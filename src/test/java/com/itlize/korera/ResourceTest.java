@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 public class ResourceTest {
@@ -35,24 +36,27 @@ public class ResourceTest {
         updateSubResourceHelper(subList, parentSource);
     }
     private void updateSubResourceHelper(List<Resource> subList, Resource parentSource){
-        List<Resource> subResourceList =  parentSource.getSubResourceList();
+       Set<Resource> subResourceSet =  parentSource.getSubResourceSet();
         for(Resource resource: subList){
-            if(!subResourceList.contains(resource)){
+            if(!subResourceSet.contains(resource)){
                 try {
                     resource.setParentResource(parentSource);
-                    subResourceList.add(resource);
+                    subResourceSet.add(resource);
                 } catch (Exception e) {
                     System.out.println(e);
                 }
             }
         }
-        this.resourceRepository.save( parentSource);
+        //bug:
+        // this.resourceRepository.updateResourceBySubResourceList(subResourceList);
+        this.resourceRepository.save(parentSource);
     }
     @Test
     public void deleteSubResource(){
-        Resource parentSource = this.resourceRepository.getResourceByResourceName("Masonry");
-        List<Resource> subList = parentSource.getSubResourceList();
-        subList.remove(0);
+        Resource subSource = this.resourceRepository.getResourceByResourceName("Stone Masonry");
+        Resource parentSource = subSource.getParentResource();
+        Set<Resource> subSet = parentSource.getSubResourceSet();
+        subSet.remove(subSource);
         this.resourceRepository.save(parentSource);
     }
 

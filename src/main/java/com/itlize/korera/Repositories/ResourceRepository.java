@@ -19,7 +19,4 @@ public interface ResourceRepository extends JpaRepository<Resource,Long> {
     //bug:
     //void updateResourceBySubResourceList(List<Resource> subResourceList);
 
-
-
-
 }

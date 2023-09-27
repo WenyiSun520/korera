@@ -3,8 +3,7 @@ package com.itlize.korera.Entities;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Resource {
@@ -15,13 +14,14 @@ public class Resource {
     @Column(name="resource_name")
     private String resourceName;
     @OneToMany(mappedBy = "resource",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-    private List<ResourceDetail> resourceDetails = new ArrayList<>();
+    private Set<ResourceDetail> resourceDetails = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "parent_resource_id")
     private Resource parentResource;
     @OneToMany(mappedBy = "parentResource", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Resource> subResourceList = new ArrayList<>();
+    private Set<Resource> subResourceSet = new HashSet<>();
+
 
 
     public Resource() {
@@ -48,21 +48,21 @@ public class Resource {
         resourceName = resourceName;
     }
 
-    public List<ResourceDetail> getResourceDetails() {
+    public Set<ResourceDetail> getResourceDetails() {
         return resourceDetails;
     }
 
-    public void setResourceDetails(List<ResourceDetail> resourceDetails) {
+    public void setResourceDetails(Set<ResourceDetail> resourceDetails) {
         this.resourceDetails = resourceDetails;
     }
 
 
-    public List<Resource> getSubResourceList() {
-        return subResourceList;
+    public Set<Resource> getSubResourceSet() {
+        return subResourceSet ;
     }
 
-    public void setSubResourceList(List<Resource> subResourceList) {
-        this.subResourceList = subResourceList;
+    public void setSubResourceList(Set<Resource> subResourceSet ) {
+        this.subResourceSet  = subResourceSet ;
     }
 
     public Resource getParentResource() {
@@ -78,7 +78,7 @@ public class Resource {
         return "Resource{" +
                 "ResourceID=" + ResourceID +
                 ", ResourceName='" + resourceName + '\'' +
-                ", subResourceList=" +subResourceList +
+                ", subResourceList=" +subResourceSet +
                 '}';
     }
 }

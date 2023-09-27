@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
+
 
 @SpringBootTest
 public class ResourceDetailTest {
@@ -22,7 +22,7 @@ public class ResourceDetailTest {
     // !! Make sure your resource table contains data!
     public void saveResourceDetail(){
         Resource resource = this.resourceRepository.getResourceByResourceName("Masonry");
-        List<ResourceDetail> detailList = resource.getResourceDetails();
+        Set<ResourceDetail> detailList = resource.getResourceDetails();
         ResourceDetail resourceDetail = new ResourceDetail();
         resourceDetail.setResource(resource);
         resourceDetail.setDetailName("description");
@@ -64,13 +64,12 @@ public class ResourceDetailTest {
         Resource resource = detail.getResource();
         System.out.println(resource.getResourceDetails());
         //remove the detail from its resource
-        List<ResourceDetail> reource_detailList = resource.getResourceDetails()
-                .stream().filter(de -> !(de.equals(detail)))
-                .toList();
-        resource.setResourceDetails(reource_detailList);
-        System.out.println(reource_detailList);
-        this.resourceRepository.save(resource);//update resource
-        this.resourceDetailRepository.delete(detail);//delete the detail
+        if(resource.getResourceDetails().remove(detail)){
+            System.out.println(resource.getResourceDetails());
+            this.resourceRepository.save(resource);//update resource
+            this.resourceDetailRepository.delete(detail);//delete the detail
+
+        }
 
     }
 }
