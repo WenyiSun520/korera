@@ -2,13 +2,16 @@ package com.itlize.korera;
 
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.ResourceDetail;
+import com.itlize.korera.Entities.User;
 import com.itlize.korera.Repositories.ResourceDetailRepository;
 import com.itlize.korera.Repositories.ResourceRepository;
+import com.itlize.korera.Repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 
@@ -18,23 +21,33 @@ public class ResourceDetailTest {
     private ResourceDetailRepository resourceDetailRepository;
     @Autowired
     private ResourceRepository resourceRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     // !! Make sure your resource table contains data!
     public void saveResourceDetail(){
+        //get the user and resource
+        User manager = this.userRepository.findByUsername("siqi@gamil.com");
+        System.out.println(manager);
         Resource resource = this.resourceRepository.getResourceByResourceName("Masonry");
-        Set<ResourceDetail> detailList = resource.getResourceDetails();
+        //create a new detail
         ResourceDetail resourceDetail = new ResourceDetail();
         resourceDetail.setResource(resource);
-        resourceDetail.setDetailName("description");
-        resourceDetail.setDescription("Masonry is the craft of building a structure with brick, stone, or similar material");
-        resourceDetail.setCreatedDate(new Date());
-        resourceDetail.setLast_modified(new Date());
-
+        resourceDetail.setDetailName("quantity");
+        resourceDetail.setdetailDescription("255");
+        resourceDetail.setCreated_date(new Date());
+        resourceDetail.setModifiedInformation(manager, new Date());
+        //save the detail to resource
         try{
+            Set<ResourceDetail> detailList = resource.getResourceDetails();
             detailList.add(resourceDetail);
+            System.out.println("detailList: "+  detailList );
+            detailList.add( resourceDetail );
+            System.out.println("after add a resourcedetail detailList: "+  detailList );
+            //update resource and save resourcedetail to DB
             this.resourceRepository.save(resource);
-            this.resourceDetailRepository.save(resourceDetail);
-
         }catch(Exception e){
             System.out.println("There is an error when saving resource detail: ");
             System.out.println(e);
@@ -50,17 +63,18 @@ public class ResourceDetailTest {
 
     @Test
     public void updateResourceDetail(){
-    ResourceDetail detail = this.resourceDetailRepository.findResourceDetailByDetailName("description");
+    User manager = this.userRepository.findByUsername("mark@gamil.com");
+    ResourceDetail detail = this.resourceDetailRepository.findResourceDetailByDetailName("quantity");
     System.out.println(detail);
-    detail.setDescription("hello world!"); //update description
-    detail.setLast_modified(new Date()); //update modified_date
+    detail.setdetailDescription("hello world!"); //update description
+
     this.resourceDetailRepository.save(detail);
 
     }
 
     @Test
     public void deleteResourceDetail(){
-        ResourceDetail detail = this.resourceDetailRepository.findResourceDetailByDetailName("description");
+        ResourceDetail detail = this.resourceDetailRepository.findResourceDetailByDetailName("quantity");
         Resource resource = detail.getResource();
         System.out.println(resource.getResourceDetails());
         //remove the detail from its resource
@@ -70,6 +84,7 @@ public class ResourceDetailTest {
             this.resourceDetailRepository.delete(detail);//delete the detail
 
         }
+
 
     }
 }

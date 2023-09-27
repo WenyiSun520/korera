@@ -1,11 +1,13 @@
 package com.itlize.korera.Entities;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.tree.Tree;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 @Entity
+@Table(name = "RESOURCE")
 public class Resource {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,14 +17,20 @@ public class Resource {
     private String resourceName;
     @OneToMany(mappedBy = "resource",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
     private Set<ResourceDetail> resourceDetails = new HashSet<>();
-
     @ManyToOne
     @JoinColumn(name = "parent_resource_id")
     private Resource parentResource;
     @OneToMany(mappedBy = "parentResource", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Resource> subResourceSet = new HashSet<>();
 
+    @Column(name = "created_date")
+    private Date created_date;
+    @Column(name = "latest_modified_date")
+    private Date latest_modified_date;
 
+    @ManyToOne
+    @JoinColumn(name = "modified_by_user_id")
+    private User latest_modified_by;
 
     public Resource() {
     }
@@ -61,7 +69,7 @@ public class Resource {
         return subResourceSet ;
     }
 
-    public void setSubResourceList(Set<Resource> subResourceSet ) {
+    public void setSubResourceSet(Set<Resource> subResourceSet ) {
         this.subResourceSet  = subResourceSet ;
     }
 
@@ -73,12 +81,41 @@ public class Resource {
         this.parentResource = parentResource;
     }
 
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
+    }
+
+    public Date getLatest_modified_date() {
+        return latest_modified_date;
+    }
+
+    public void setLatest_modified_date(Date latest_modified_date) {
+        this.latest_modified_date = latest_modified_date;
+    }
+
+    public User getLatest_modified_by() {
+        return latest_modified_by;
+    }
+
+    public void setLatest_modified_by(User latest_modified_by) {
+        this.latest_modified_by = latest_modified_by;
+    }
+
     @Override
     public String toString() {
         return "Resource{" +
                 "ResourceID=" + ResourceID +
-                ", ResourceName='" + resourceName + '\'' +
-                ", subResourceList=" +subResourceSet +
+                ", resourceName='" + resourceName + '\'' +
+                ", resourceDetails=" + resourceDetails +
+                ", subResourceSet=" + subResourceSet +
+                ", created_date=" + created_date +
+                ", latest_modified_date=" + latest_modified_date +
+                ", latest_modified_by=" + latest_modified_by +
                 '}';
     }
+
 }

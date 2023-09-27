@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "RESOURCE_DETAIL")
 public class ResourceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,14 +19,16 @@ public class ResourceDetail {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "resourceid")
     private Resource resource;
-    @Column(nullable = false)
+    @Column(name="name", nullable = false)
     private String detailName;
-    private String description;
-//    @ManyToOne
-//    @Column(nullable = false)
-//    private User user;
-    private Date createdDate;
-    private Date last_modified;
+    @Column(name="detail_description")
+    private String detailDescription;
+
+    private Date created_date;
+    private Date latest_updated;
+    @ManyToOne
+    @JoinColumn(name = "latest_modified_user_id")
+    private User latest_modified_by;
 
 
     public long getResourceDetailID() {
@@ -33,7 +36,7 @@ public class ResourceDetail {
     }
 
     public void setResourceDetailID(long resourceDetailID) {
-        resourceDetailID = resourceDetailID;
+        this.resourceDetailID = resourceDetailID;
     }
 
     public Resource getResource() {
@@ -52,48 +55,54 @@ public class ResourceDetail {
         this.detailName = detailName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getdetailDescription() {
+        return detailDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setdetailDescription(String detail) {
+        this.detailDescription = detail;
     }
 
-   /* public User getUser() {
-        return user;
+    public Date getCreated_date() {
+        return created_date;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }*/
-
-    public Date getCreatedDate() {
-        return createdDate;
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
+
+    public Date getLatest_updated() {
+        return latest_updated;
     }
 
-    public Date getLast_modified() {
-        return last_modified;
+    public void setLatest_updated(Date latest_updated) {
+        this.latest_updated = latest_updated;
     }
 
-    public void setLast_modified(Date last_modified) {
-        this.last_modified = last_modified;
+    public User getLatest_modified_by() {
+        return latest_modified_by;
+    }
+
+    public void setLatest_modified_by(User latest_modified_by) {
+        this.latest_modified_by = latest_modified_by;
+    }
+
+    public void setModifiedInformation(User latest_modified_by, Date latest_updated){
+        this.latest_modified_by = latest_modified_by;
+        this.latest_updated = latest_updated;
     }
 
     @Override
     public String toString() {
         return "ResourceDetail{" +
-                "ResourceDetailID=" + resourceDetailID +
-                ", resource=" + resource +
+                "resourceDetailID=" + resourceDetailID +
+                ", parentResourceID= " + resource.getResourceID() +
                 ", detailName='" + detailName + '\'' +
-                ", description='" + description + '\'' +
-//                ", user=" + user +
-                ", createdDate=" + createdDate +
-                ", last_modified=" + last_modified +
+                ", detail='" + detailDescription + '\'' +
+                ", created_date=" + created_date +
+                ", latest_updated=" + latest_updated +
+                ", latest_modified_by=" + latest_modified_by +
                 '}';
     }
 }
