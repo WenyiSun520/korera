@@ -31,6 +31,11 @@ public class ResourceDetail {
     private User latest_modified_by;
 
 
+    @ManyToOne
+    @JoinColumn(name="formulaId")
+    private Formula formula;
+
+
     public long getResourceDetailID() {
         return resourceDetailID;
     }

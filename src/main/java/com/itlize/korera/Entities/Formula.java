@@ -2,7 +2,7 @@ package com.itlize.korera.Entities;
 
 import jakarta.persistence.*;
 
-// import java.util.*;
+import java.util.*;
 
 @Entity
 @Table(name="Formula")
@@ -24,6 +24,10 @@ public class Formula {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="projectId")
     private Project project;
+
+
+    @OneToMany(mappedBy="formula", cascade = CascadeType.ALL)
+    private List<ResourceDetail> resourceDetailList = new ArrayList<>();
 
     public Formula(){
 
@@ -74,6 +78,18 @@ public class Formula {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<ResourceDetail> getResourceDetailList() {
+        return resourceDetailList;
+    }
+
+    public void setResourceDetailList(ResourceDetail resourceDetail) {
+        this.resourceDetailList.add(resourceDetail);
+    }
+
+    public void setResourceDetailList(List<ResourceDetail> resourceDetailList) {
+        this.resourceDetailList = resourceDetailList;
     }
 
     @Override

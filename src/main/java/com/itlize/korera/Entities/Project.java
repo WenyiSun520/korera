@@ -26,8 +26,9 @@ public class Project {
     @JoinColumn(name="userId")
     private User user;
 
-//    @ManyToMany
-//    private Set<Resource> resources;
+
+    @OneToMany(mappedBy="projectId")
+    private Set<ProjectResource> projectResources = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
     private List<Formula> formulas;
@@ -85,13 +86,19 @@ public class Project {
         this.user = user;
     }
 
-//    public Set<Resource> getResources() {
-//        return resources;
-//    }
-//
-//    public void setResources(Set<Resource> resources) {
-//        this.resources = resources;
-//    }
+    public Set<ProjectResource> getProjectResourceSet( ) {
+        return projectResources;
+    }
+
+    public void setProjectResourceSet(ProjectResource projectResource) {
+        this.projectResources.add(projectResource);
+    }
+
+    public void setProjectResourceSet(Set<ProjectResource> projectResources) {
+        this.projectResources = projectResources;
+    }
+
+
 
     @Override
     public String toString() {

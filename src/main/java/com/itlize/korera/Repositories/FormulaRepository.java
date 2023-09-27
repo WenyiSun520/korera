@@ -20,7 +20,7 @@ public interface FormulaRepository extends JpaRepository<Formula, Long> {
     //getFormulaByResourceId(Long id)
     Formula get(Long id);
 
-    //updateFormula(, Formula formula)
+    //updateFormula(Long projectId, Formula formula)
     void update(Long projectId, Formula formula);
 
     //deleteFormula(Long formulaId)
