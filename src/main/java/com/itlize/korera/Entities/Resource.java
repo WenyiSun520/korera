@@ -23,6 +23,9 @@ public class Resource {
     @OneToMany(mappedBy = "parentResource", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Resource> subResourceSet = new HashSet<>();
 
+    @OneToMany(mappedBy="resource")
+    private Set<Formula> formulas;
+
 
     @OneToMany(mappedBy="resourceId")
     private Set<ProjectResource> projectResources;

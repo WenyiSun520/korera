@@ -3,47 +3,44 @@ package com.itlize.korera;
 import java.util.Date;
 import java.util.*;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.itlize.korera.Entities.ColumnTypeEnum;
 import com.itlize.korera.Entities.Formula;
 import com.itlize.korera.Entities.Project;
+import com.itlize.korera.Entities.Resource;
+import com.itlize.korera.Entities.ResourceDetail;
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.Repositories.FormulaRepository;
+import com.itlize.korera.Repositories.ProjectRepository;
+import com.itlize.korera.Repositories.ResourceDetailRepository;
+import com.itlize.korera.Repositories.ResourceRepository;
 import com.itlize.korera.Repositories.UserRepository;
 
 @SpringBootTest
 public class FormulaTest {
   
   @Autowired
-  private Formula formula;
+  private FormulaRepository formulaRepository;
 
 
   @Autowired
-  private Project project;
+  private ProjectRepository projectRepository;
 
   @Autowired
   private UserRepository userRepository;
 
 
-
-  public void getFormulasByProjectId() {
-    User user = this.userRepository.findByUsername("siqi@gamil.com");
-    
-    //creating a new project
-    Project project = new Project();
-    project.setUser(user);
-    project.setProjectNumber("project1");
-    project.setDateCreated(new Date());
-    project.setLastModified(new Date());
-
-
-    //creating formula
-    try {
-      Set<Formula> formulas = 
-    }
-
-
-    
+  @Test
+  void addFormula() {
+    Formula f = new Formula();
+    Project p = projectRepository.findById((long) 1).orElse(null);
+    f.setFieldName("quantity");
+    f.setFieldValue("10");
+    f.setFieldType(ColumnTypeEnum.NUMBER);
+    f.setProject(p);
   }
 
 }
