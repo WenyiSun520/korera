@@ -12,33 +12,31 @@ public class Formula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long formulaId;
 
-    @Column(name="cost_code")
-    private Long costCode;
+    @Column(name="Resource Field Name")
+    private String resourceFieldName;
 
-    @Column(name="editable")
-    private boolean editable;
+    @Column(name="field Name")
+    private String fieldName;
 
-    @Column(name="item_id")
-    private String itemId;
+    @Column(name="type")
+    private ColumnTypeEnum fieldType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name="value")
+    private String fieldValue;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="projectId")
     private Project project;
-
-
-    @OneToMany(mappedBy="formula")
-    private List<DataCell> cellValue;
-
-
 
     public Formula(){
 
     }
 
-    public Formula(Long costCode, boolean editable, String itemId, Project project) {
-        this.costCode = costCode;
-        this.editable = editable;
-        this.itemId = itemId;
+    public Formula(String resourceFieldName, String fieldName, ColumnTypeEnum fieldType, String fieldValue, Project project) {
+        this.resourceFieldName = resourceFieldName;
+        this.fieldName = fieldName;
+        this.fieldType = fieldType;
+        this.fieldValue = fieldValue;
         this.project = project;
     }
 
@@ -50,28 +48,36 @@ public class Formula {
         this.formulaId = formulaId;
     }
 
-    public Long getCostCode() {
-        return costCode;
+    public String getResourceFieldName() {
+        return resourceFieldName;
     }
 
-    public void setCostCode(Long costCode) {
-        this.costCode = costCode;
+    public void setResourceFieldName(String resourceFieldName) {
+        this.resourceFieldName = resourceFieldName;
     }
 
-    public boolean isEditable() {
-        return editable;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setEditable(boolean editable) {
-        this.editable = editable;
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 
-    public String getItemId() {
-        return itemId;
+    public ColumnTypeEnum getFieldType() {
+        return fieldType;
     }
 
-    public void setItemID(String itemId) {
-        this.itemId = itemId;
+    public void setFieldType(ColumnTypeEnum fieldType) {
+        this.fieldType = fieldType;
+    }
+
+    public String getFieldValue() {
+        return fieldValue;
+    }
+
+    public void setFieldValue(String fieldValue) {
+        this.fieldValue = fieldValue;
     }
 
     public Project getProject() {
@@ -82,15 +88,14 @@ public class Formula {
         this.project = project;
     }
 
-
-
     @Override
     public String toString() {
         return "Formula{" +
                 "formulaId=" + formulaId +
-                ", costCode=" + costCode +
-                ", editable=" + editable +
-                ", itemId='" + itemId + '\'' +
+                ", resourceFieldName='" + resourceFieldName + '\'' +
+                ", fieldName='" + fieldName + '\'' +
+                ", fieldType=" + fieldType +
+                ", fieldValue='" + fieldValue + '\'' +
                 ", project=" + project +
                 '}';
     }

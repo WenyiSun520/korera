@@ -29,20 +29,20 @@ public class Project {
 //    @ManyToMany
 //    private Set<Resource> resources;
 
-    @OneToOne(mappedBy = "project", cascade=CascadeType.ALL)
-    private Formula formula;
+    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
+    private List<Formula> formulas;
 
     public Project() {
 
     }
 
 
-    public Project(String projectNumber, Date dateCreated, Date lastModified, User user, Formula formula) {
+    public Project(String projectNumber, Date dateCreated, Date lastModified, User user, List<Formula> formulas) {
         this.projectNumber = projectNumber;
         this.dateCreated = dateCreated;
         this.lastModified = lastModified;
         this.user = user;
-        this.formula = formula;
+        this.formulas = formulas;
     }
 
     public Long getProjectId() {
@@ -93,14 +93,6 @@ public class Project {
 //        this.resources = resources;
 //    }
 
-    public Formula getFormula() {
-        return formula;
-    }
-
-    public void setFormula(Formula formula) {
-        this.formula = formula;
-    }
-
     @Override
     public String toString() {
         return "Project{" +
@@ -110,7 +102,7 @@ public class Project {
                 ", lastModified=" + lastModified +
                 ", user=" + user +
 //                ", resources=" + resources +
-                ", formula=" + formula +
+                ", formulas=" + formulas +
                 '}';
     }
 }
