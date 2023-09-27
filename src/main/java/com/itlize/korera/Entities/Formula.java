@@ -10,7 +10,7 @@ public class Formula {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long formulaID;
+    private Long formulaId;
 
     @Column(name="cost_code")
     private Long costCode;
@@ -19,32 +19,35 @@ public class Formula {
     private boolean editable;
 
     @Column(name="item_id")
-    private String itemID;
+    private String itemId;
 
-    @OneToOne(mappedBy="formula")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="projectId")
     private Project project;
 
-    @OneToMany(mappedBy="formulaTable", cascade = CascadeType.ALL)
-    private List<QuantitySurveyFields> quantitySurveyFieldsList;
+
+    @OneToMany(mappedBy="formula")
+    private List<DataCell> cellValue;
+
+
 
     public Formula(){
 
     }
 
-    public Formula(Long costCode, boolean editable, String itemID, Project project, List<QuantitySurveyFields> quantitySurveyFieldsList) {
+    public Formula(Long costCode, boolean editable, String itemId, Project project) {
         this.costCode = costCode;
         this.editable = editable;
-        this.itemID = itemID;
+        this.itemId = itemId;
         this.project = project;
-        this.quantitySurveyFieldsList = quantitySurveyFieldsList;
     }
 
-    public Long getFormulaID() {
-        return formulaID;
+    public Long getFormulaId() {
+        return formulaId;
     }
 
-    public void setFormulaID(Long formulaID) {
-        this.formulaID = formulaID;
+    public void setFormulaId(Long formulaId) {
+        this.formulaId = formulaId;
     }
 
     public Long getCostCode() {
@@ -63,12 +66,12 @@ public class Formula {
         this.editable = editable;
     }
 
-    public String getItemID() {
-        return itemID;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
+    public void setItemID(String itemId) {
+        this.itemId = itemId;
     }
 
     public Project getProject() {
@@ -79,23 +82,16 @@ public class Formula {
         this.project = project;
     }
 
-    public List<QuantitySurveyFields> getQuantitySurveyFieldsList() {
-        return quantitySurveyFieldsList;
-    }
 
-    public void setQuantitySurveyFieldsList(List<QuantitySurveyFields> quantitySurveyFieldsList) {
-        this.quantitySurveyFieldsList = quantitySurveyFieldsList;
-    }
 
     @Override
     public String toString() {
         return "Formula{" +
-                "formulaID=" + formulaID +
+                "formulaId=" + formulaId +
                 ", costCode=" + costCode +
                 ", editable=" + editable +
-                ", itemID='" + itemID + '\'' +
+                ", itemId='" + itemId + '\'' +
                 ", project=" + project +
-                ", quantitySurveyFieldsList=" + quantitySurveyFieldsList +
                 '}';
     }
 }

@@ -19,7 +19,7 @@ public class User {;
     private Date created_date;
 
     @OneToMany(mappedBy="user")
-    private List<Project> project;
+    private List<Project> projects;
 
     public User() {
 
