@@ -12,9 +12,6 @@ public class Formula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long formulaId;
 
-    @Column(name="Resource Field Name")
-    private String resourceFieldName;
-
     @Column(name="field Name")
     private String fieldName;
 
