@@ -29,8 +29,7 @@ public class Formula {
 
     }
 
-    public Formula(String resourceFieldName, String fieldName, ColumnTypeEnum fieldType, String fieldValue, Project project) {
-        this.resourceFieldName = resourceFieldName;
+    public Formula(String fieldName, ColumnTypeEnum fieldType, String fieldValue, Project project) {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
         this.fieldValue = fieldValue;
@@ -43,14 +42,6 @@ public class Formula {
 
     public void setFormulaId(Long formulaId) {
         this.formulaId = formulaId;
-    }
-
-    public String getResourceFieldName() {
-        return resourceFieldName;
-    }
-
-    public void setResourceFieldName(String resourceFieldName) {
-        this.resourceFieldName = resourceFieldName;
     }
 
     public String getFieldName() {
@@ -89,7 +80,6 @@ public class Formula {
     public String toString() {
         return "Formula{" +
                 "formulaId=" + formulaId +
-                ", resourceFieldName='" + resourceFieldName + '\'' +
                 ", fieldName='" + fieldName + '\'' +
                 ", fieldType=" + fieldType +
                 ", fieldValue='" + fieldValue + '\'' +
