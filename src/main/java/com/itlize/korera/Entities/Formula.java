@@ -2,7 +2,7 @@ package com.itlize.korera.Entities;
 
 import jakarta.persistence.*;
 
-import java.util.*;
+// import java.util.*;
 
 @Entity
 @Table(name="Formula")
