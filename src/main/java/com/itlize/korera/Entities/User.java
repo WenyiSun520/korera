@@ -6,16 +6,22 @@ import java.util.Date;
 import java.util.*;
 
 @Entity
+@Table(name = "USER")
 public class User {;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name ="userid")
     private long userID;
 
+    @Column(name ="username")
     private String username;
+    @Column(name ="fname")
     private String fname;
+    @Column(name ="lname")
     private String lname;
+    @Column(name ="password")
     private String password;
-
+    @Column(name ="created_date")
     private Date created_date;
 
     @OneToMany(mappedBy="user")
