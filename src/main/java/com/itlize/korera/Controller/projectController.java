@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+// import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itlize.korera.Entities.Project;
@@ -56,10 +57,23 @@ public class projectController {
 
 
   @PutMapping("/{projectName}/update")
-  public ResponseEntity<String> updateProjectName(@PathVariable String oldProjectName, @RequestParam String newProjectName, @RequestBody Project Project) {
+  public ResponseEntity<String> updateProjectName(@PathVariable String oldProjectName, @RequestBody Project project) {
     try {
+      String newProjectName = project.getProjectNumber();
       projectService.updateProjectNameByName(oldProjectName, newProjectName);
+      return ResponseEntity.ok().body("updated project name successfully");
+    } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @DeleteMapping("/username/deleteProject/delete/{projectId}")
+  public ResponseEntity<String> deleteProject(@PathVariable long projectId) {
+    if (projectService.deleteProjectById(projectId)) {
+      return ResponseEntity.ok().body("project has been deleted");
+    }
+    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
   }
 
   
