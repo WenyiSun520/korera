@@ -12,17 +12,5 @@ import java.util.*;
 @EnableJpaRepositories
 public interface FormulaRepository extends JpaRepository<Formula, Long> {
 
-    //save a formula
-
-    //getAllFormulasByProjectId(Long id)
-    List<Formula> getFormulasByProjectId(Long projectId);
-
-    //getFormulaByResourceId(Long id)
-    Formula get(Long id);
-
-    //updateFormula(, Formula formula)
-    void update(Long projectId, Formula formula);
-
-    //deleteFormula(Long formulaId)
-    void delete(Long formulaId);
+   
 }

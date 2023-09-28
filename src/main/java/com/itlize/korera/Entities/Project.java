@@ -13,7 +13,7 @@ public class Project {
     @Column(name="Project_Id")
     private Long projectId;
 
-    @Column(name="Project_Number")
+    @Column(name="Project_Number", unique=true)
     private String projectNumber;
 
     @Column(name="date_created")
@@ -22,14 +22,15 @@ public class Project {
     @Column(name="last_modified")
     private Date lastModified;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="userId")
     private User user;
 
-//    @ManyToMany
-//    private Set<Resource> resources;
 
-    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy="projectId")
+    private Set<ProjectResource> projectResources = new HashSet<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Formula> formulas;
 
     public Project() {
@@ -37,12 +38,11 @@ public class Project {
     }
 
 
-    public Project(String projectNumber, Date dateCreated, Date lastModified, User user, List<Formula> formulas) {
+    public Project(String projectNumber, Date dateCreated, Date lastModified, User user) {
         this.projectNumber = projectNumber;
         this.dateCreated = dateCreated;
         this.lastModified = lastModified;
         this.user = user;
-        this.formulas = formulas;
     }
 
     public Long getProjectId() {
@@ -85,13 +85,19 @@ public class Project {
         this.user = user;
     }
 
-//    public Set<Resource> getResources() {
-//        return resources;
-//    }
-//
-//    public void setResources(Set<Resource> resources) {
-//        this.resources = resources;
-//    }
+    public Set<ProjectResource> getProjectResourceSet( ) {
+        return projectResources;
+    }
+
+    public void setProjectResourceSet(ProjectResource projectResource) {
+        this.projectResources.add(projectResource);
+    }
+
+    public void setProjectResourceSet(Set<ProjectResource> projectResources) {
+        this.projectResources = projectResources;
+    }
+
+
 
     @Override
     public String toString() {

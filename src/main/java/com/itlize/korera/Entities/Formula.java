@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 // import java.util.*;
 
+
+/** 
+ * formula detail 
+ * extra cell
+ */
 @Entity
 @Table(name="Formula")
 public class Formula {
@@ -25,15 +30,20 @@ public class Formula {
     @JoinColumn(name="projectId")
     private Project project;
 
+    @ManyToOne
+    @JoinColumn(name="ResourceID")
+    private Resource resource;
+
     public Formula(){
 
     }
 
-    public Formula(String fieldName, ColumnTypeEnum fieldType, String fieldValue, Project project) {
+    public Formula(String fieldName, ColumnTypeEnum fieldType, String fieldValue, Project project, Resource resource) {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
         this.fieldValue = fieldValue;
         this.project = project;
+        this.resource = resource;
     }
 
     public Long getFormulaId() {
@@ -76,6 +86,14 @@ public class Formula {
         this.project = project;
     }
 
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
+
     @Override
     public String toString() {
         return "Formula{" +
@@ -86,4 +104,5 @@ public class Formula {
                 ", project=" + project +
                 '}';
     }
+   
 }
