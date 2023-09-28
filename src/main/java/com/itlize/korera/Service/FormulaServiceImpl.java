@@ -15,7 +15,6 @@ public class FormulaServiceImpl implements FormulaService{
   
 
   private final FormulaRepository formulaRepository;
-  private final 
   
 
   @Autowired
@@ -43,7 +42,7 @@ public class FormulaServiceImpl implements FormulaService{
     return formulaRepository.findByProject(project);
   }
 
-  public boolean updateFormulaType(Formula formula, ColumnTypeEnum type) {
+  public void updateFormulaType(Formula formula, ColumnTypeEnum type) {
     formula.setFieldType(type);
     formulaRepository.save(formula);
   }
