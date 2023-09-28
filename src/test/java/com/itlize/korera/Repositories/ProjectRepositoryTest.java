@@ -41,7 +41,7 @@ public class ProjectRepositoryTest {
   @Test
   void updateProject() {
     //arrange
-    Project p = projectRepository.getProjectByProjectNumber("project4");
+    Project p = projectRepository.getProjectByProjectNumber("project092");
     p.setProjectNumber("project19898");
 
     //act
@@ -50,5 +50,9 @@ public class ProjectRepositoryTest {
 
     //assert
     assertEquals("project19898",p.getProjectNumber());
+  }
+  @Test
+  void getProject(){
+    Project p = projectRepository.getProjectByProjectNumber("project092");
   }
 }

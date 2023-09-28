@@ -42,7 +42,5 @@ public class ProjectResourceRepositoryTest {
     //act
     projectResourceRepository.save(pr);
 
-
-
   }
 }

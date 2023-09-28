@@ -118,7 +118,7 @@ public class Resource {
                 "ResourceID=" + resourceID +
                 ", resourceName='" + resourceName + '\'' +
                 ", resourceDetails=" + resourceDetails +
-                ", subResourceSet=" + subResourceSet +
+                ", subResourceSet=" + subResourceSet.toString() +
                 ", created_date=" + created_date +
                 ", latest_modified_date=" + latest_modified_date +
                 ", latest_modified_by=" + latest_modified_by +
