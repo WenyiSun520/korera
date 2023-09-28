@@ -13,5 +13,7 @@ public interface ProjectService {
 
   void updateProjectNameByName(String oldProjectName, String newProjectName);
   
-  // List<Project> getAllProjectsByUserName(String userName);
+  List<Project> getAllProjectsByUserName(String userName);
+
+  boolean deleteProjectById(long projectId);
 }
