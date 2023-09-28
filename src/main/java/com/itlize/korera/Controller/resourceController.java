@@ -43,7 +43,7 @@ public class resourceController {
 
    @PostMapping("/{username}/add_new_resource")
     public ResponseEntity<String> addResource(@PathVariable("username") String username, @RequestBody Resource resource){
-        System.out.println(resource);
+        //System.out.println(resource);
         if(this.resourceService.saveNewResource(resource, username)) {
             return ResponseEntity.ok().body("new resource is saved successfully!");
         }else{
