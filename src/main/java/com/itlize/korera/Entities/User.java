@@ -3,6 +3,7 @@ package com.itlize.korera.Entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "USER")
@@ -22,6 +23,9 @@ public class User {;
     private String password;
     @Column(name ="created_date")
     private Date created_date;
+
+    @OneToMany(mappedBy="user")
+    private List<Project> projects;
 
     public User() {
 
