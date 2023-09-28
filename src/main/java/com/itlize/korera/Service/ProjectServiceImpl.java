@@ -40,9 +40,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
   }
 
-  // @Override
-  // public List<Project> getAllProjectsByUserName(String userName) {
-  //   User user = (User) this.userRepository.findByUsername(userName);
-  //   List<Project> projects = new ArrayList<>();
-  // }
+  @Override
+  public List<Project> getAllProjectsByUserName(String userName) {
+    return projectRepository.getAllProjectsByUserName(userName);
+  }
+
+  @Override
+  public boolean deleteProjectById(long projectId) {
+    Project p = projectRepository.findById(projectId).orElse(null);
+    
+      if (p != null) {
+        projectRepository.delete(p);
+        return !projectRepository.existsById(projectId);
+      }
+      return false;
+
+  }
 }
