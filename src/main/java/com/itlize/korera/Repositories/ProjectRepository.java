@@ -17,7 +17,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 
     //getProjectById(Long projectId)
-//    Project get(Long projectId);
 
     //getProjectByUserId(Long userId)
 
