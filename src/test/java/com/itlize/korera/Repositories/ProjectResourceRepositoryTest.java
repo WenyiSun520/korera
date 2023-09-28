@@ -16,22 +16,33 @@ public class ProjectResourceRepositoryTest {
   @Autowired
   ProjectResourceRepository projectResourceRepository;
 
+  @Autowired
+  ProjectRepository projectRepository;
+
+  @Autowired
+  ResourceRepository resourceRepository;
 
   @Test
   void addProjectResource() {
+
+    //arrange
     Project p = new Project();
-    p.setProjectNumber("project21");
+    p.setProjectNumber("project55");
     p.setDateCreated(new Date(0));
-    p.setProjectID(21L);
+    projectRepository.save(p); 
     
     Resource r = new Resource();
-    r.setResourceID(21L);
-    r.setResourceName("Resource21");
+    r.setResourceName("Resource55");
+    resourceRepository.save(r);
 
 
-    ProjectResource pr = new ProjectResource(2, p, r);
+    ProjectResource pr = new ProjectResource(6, p, r);
 
+
+    //act
     projectResourceRepository.save(pr);
+
+
 
   }
 }

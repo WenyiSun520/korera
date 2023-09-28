@@ -30,7 +30,7 @@ public class Project {
     @OneToMany(mappedBy="projectId")
     private Set<ProjectResource> projectResources = new HashSet<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Formula> formulas;
 
     public Project() {

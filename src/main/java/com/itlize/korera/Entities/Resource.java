@@ -60,7 +60,7 @@ public class Resource {
     }
 
     public void setResourceName(String resourceName) {
-        resourceName = resourceName;
+        this.resourceName = resourceName;
     }
 
     public Set<ResourceDetail> getResourceDetails() {

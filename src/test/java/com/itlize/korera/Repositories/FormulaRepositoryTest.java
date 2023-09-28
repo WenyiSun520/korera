@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
 
-import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +35,7 @@ public class FormulaRepositoryTest {
     Project p = new Project();
     Resource r = new Resource();
     resourceRepository.save(r);
-    f.setFieldName("quantity");
+    f.setFieldName("price");
     f.setFieldValue("10");
     f.setFieldType(ColumnTypeEnum.NUMBER);
     f.setProject(p);
@@ -53,7 +53,7 @@ public class FormulaRepositoryTest {
   void getFormulasById() {
     // arrange
     User user = new User("Bob", "12345", new Date(0));
-    Project p = new Project("project7", new Date(0), new Date(0), user);
+    Project p = new Project("project65", new Date(0), new Date(0), user);
     projectRepository.save(p);
     Resource r = resourceRepository.findById((long) 1).orElse(null);
     Formula f = new Formula();
