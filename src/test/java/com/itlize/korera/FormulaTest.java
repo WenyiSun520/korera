@@ -1,6 +1,9 @@
 package com.itlize.korera;
 
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.*;
 
 import org.junit.jupiter.api.Test;
@@ -21,26 +24,38 @@ import com.itlize.korera.Repositories.UserRepository;
 
 @SpringBootTest
 public class FormulaTest {
-  
+
   @Autowired
   private FormulaRepository formulaRepository;
-
 
   @Autowired
   private ProjectRepository projectRepository;
 
   @Autowired
-  private UserRepository userRepository;
+  private ResourceRepository resourceRepository;
 
-
+  // create
   @Test
   void addFormula() {
-    Formula f = new Formula();
-    Project p = projectRepository.findById((long) 1).orElse(null);
-    f.setFieldName("quantity");
-    f.setFieldValue("10");
-    f.setFieldType(ColumnTypeEnum.NUMBER);
-    f.setProject(p);
+    // arrange
+    try {
+      Formula f = new Formula();
+      Project p = projectRepository.findById((long) 1).orElse(null);
+      Resource r = resourceRepository.findById((long) 1).orElse(null);
+      f.setFieldName("quantity");
+      f.setFieldValue("10");
+      f.setFieldType(ColumnTypeEnum.NUMBER);
+      f.setProject(p);
+      f.setResource(r);
+      // act
+      Formula savedF = formulaRepository.save(f);
+      // assert
+      assertTrue(savedF.equals(f));
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
+
+  // read
 
 }
