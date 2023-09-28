@@ -1,5 +1,6 @@
 package com.itlize.korera.Repositories;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
@@ -39,7 +40,15 @@ public class ProjectRepositoryTest {
    */
   @Test
   void updateProject() {
-    Project p = projectRepository.getProjectByProjectNumber("project17");
-    // p.se
+    //arrange
+    Project p = projectRepository.getProjectByProjectNumber("project4");
+    p.setProjectNumber("project5");
+
+    //act
+    projectRepository.save(p);
+
+
+    //assert
+    assertEquals("project5",p.getProjectNumber());
   }
 }

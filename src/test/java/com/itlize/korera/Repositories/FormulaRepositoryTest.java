@@ -32,8 +32,8 @@ public class FormulaRepositoryTest {
   void addFormula() {
     // arrange
     Formula f = new Formula();
-    Project p = new Project();//projectRepository.findById((long) 14).orElse(null);
-    Resource r = new Resource();//resourceRepository.findById((long) 1).orElse(null);
+    Project p = new Project();
+    Resource r = new Resource();
     resourceRepository.save(r);
     f.setFieldName("quantity");
     f.setFieldValue("10");
@@ -51,8 +51,9 @@ public class FormulaRepositoryTest {
   // read
   @Test
   void getFormulasById() {
+    // arrange
     User user = new User("Bob", "12345", new Date(0));
-    Project p = new Project("project6", new Date(0), new Date(0), user);
+    Project p = new Project("project7", new Date(0), new Date(0), user);
     projectRepository.save(p);
     Resource r = resourceRepository.findById((long) 1).orElse(null);
     Formula f = new Formula();
@@ -64,7 +65,11 @@ public class FormulaRepositoryTest {
     f.setResource(r);
     formulaRepository.save(f);
 
+
+    // act
     Formula newerF = formulaRepository.findById(2L).orElse(null);
+
+    //assert
     assertEquals("1234567", newerF.getFieldName());
   }
 
