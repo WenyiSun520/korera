@@ -27,12 +27,12 @@ public class ProjectResourceRepositoryTest {
 
     //arrange
     Project p = new Project();
-    p.setProjectNumber("project55");
+    p.setProjectNumber("project132");
     p.setDateCreated(new Date(0));
     projectRepository.save(p); 
     
     Resource r = new Resource();
-    r.setResourceName("Resource55");
+    r.setResourceName("Resource132");
     resourceRepository.save(r);
 
 

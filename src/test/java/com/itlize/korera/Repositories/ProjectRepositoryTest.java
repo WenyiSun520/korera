@@ -25,7 +25,7 @@ public class ProjectRepositoryTest {
   void addProject() {
     //arrange
     User user = new User("siqichen", "siqi", "chen", "password", new Date(0));
-    Project project = new Project("project17", new Date(0), new Date(0), user);
+    Project project = new Project("project092", new Date(0), new Date(0), user);
 
     //act
     Project savedProject = projectRepository.save(project);
@@ -42,13 +42,13 @@ public class ProjectRepositoryTest {
   void updateProject() {
     //arrange
     Project p = projectRepository.getProjectByProjectNumber("project4");
-    p.setProjectNumber("project5");
+    p.setProjectNumber("project19898");
 
     //act
     projectRepository.save(p);
 
 
     //assert
-    assertEquals("project5",p.getProjectNumber());
+    assertEquals("project19898",p.getProjectNumber());
   }
 }

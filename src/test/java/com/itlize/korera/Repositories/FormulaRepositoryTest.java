@@ -35,8 +35,8 @@ public class FormulaRepositoryTest {
     Project p = new Project();
     Resource r = new Resource();
     resourceRepository.save(r);
-    f.setFieldName("price");
-    f.setFieldValue("10");
+    f.setFieldName("total");
+    f.setFieldValue("200");
     f.setFieldType(ColumnTypeEnum.NUMBER);
     f.setProject(p);
     f.setResource(r);
