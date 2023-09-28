@@ -15,11 +15,11 @@ import com.itlize.korera.Entities.Resource;
 @Repository
 @EnableJpaRepositories
 public interface ProjectResourceRepository extends JpaRepository<ProjectResource, Integer> {
-  List<ProjectResource> findByProject(Project project);
+  // List<ProjectResource> findByProject(Project project);
 
-  List<ProjectResource> findByResource(Resource resource);
+  // List<ProjectResource> findByResource(Resource resource);
 
-  Set<ProjectResource> findByProjectAndResource(Project project, Resource resource);
+  // Set<ProjectResource> findByProjectAndResource(Project project, Resource resource);
 
-  void deleteByProjectAndResource(Project project, Resource resource);
+  // void deleteByProjectAndResource(Project project, Resource resource);
 }

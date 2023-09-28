@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import com.itlize.korera.Entities.ColumnTypeEnum;
 import com.itlize.korera.Entities.Formula;
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Repositories.FormulaRepository;
 import com.itlize.korera.Repositories.ProjectRepository;
-
+@Service
 public class FormulaServiceImpl implements FormulaService{
   
   @Autowired

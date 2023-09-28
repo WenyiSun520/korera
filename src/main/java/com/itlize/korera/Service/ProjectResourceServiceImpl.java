@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Entities.ProjectResource;
@@ -12,6 +13,7 @@ import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Repositories.ProjectRepository;
 import com.itlize.korera.Repositories.ResourceRepository;
 
+@Service
 public class ProjectResourceServiceImpl implements ProjectResourceService {
 
   @Autowired
@@ -79,7 +81,7 @@ public class ProjectResourceServiceImpl implements ProjectResourceService {
         projectRepository.save(project);
         return true;
       }
-
+      
     }
     return false;
   }

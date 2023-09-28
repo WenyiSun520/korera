@@ -33,7 +33,7 @@ public class formulaController {
     this.projectService = projectService;
   }
 
-  @GetMapping("/{projects/{projectName}/formulas")
+  @GetMapping("/{projects}/{projectName}/formulas")
   public ResponseEntity<List<Formula>> getAllFormula(@PathVariable("projectName") String projectName) {
     Project project = projectService.getProjectByProjectName(projectName);
     if (project == null) {

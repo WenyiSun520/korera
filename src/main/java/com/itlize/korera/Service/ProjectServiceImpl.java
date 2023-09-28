@@ -4,11 +4,14 @@ import java.util.List;
 
 import com.itlize.korera.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Repositories.ProjectRepository;
 import com.itlize.korera.Repositories.UserRepository;
 
+
+@Service
 public class ProjectServiceImpl implements ProjectService {
 
   @Autowired
