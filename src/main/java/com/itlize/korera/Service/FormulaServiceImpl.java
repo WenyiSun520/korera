@@ -13,11 +13,11 @@ import com.itlize.korera.Repositories.ProjectRepository;
 
 public class FormulaServiceImpl implements FormulaService{
   
-
+  @Autowired
   private final FormulaRepository formulaRepository;
   
 
-  @Autowired
+  
   public FormulaServiceImpl(FormulaRepository formulaRepository) {
     this.formulaRepository = formulaRepository;
   }
