@@ -112,6 +112,16 @@ public class Resource {
         this.latest_modified_by = latest_modified_by;
     }
 
+    
+
+    public Set<ProjectResource> getProjectResources() {
+        return projectResources;
+    }
+
+    public void setProjectResources(Set<ProjectResource> projectResources) {
+        this.projectResources = projectResources;
+    }
+
     @Override
     public String toString() {
         return "Resource{" +

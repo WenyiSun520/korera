@@ -12,12 +12,12 @@ public class ProjectResource {
 
   @ManyToOne(cascade=CascadeType.ALL)
   @JoinColumn(name="projectId")
-  private Project projectId;
+  private Project projectId;  //projectId == project
 
 
   @ManyToOne(cascade=CascadeType.ALL)
   @JoinColumn(name="ResourceID")
-  private Resource resourceId;
+  private Resource resourceId; //resourceId == resource
 
   public ProjectResource() {
     
@@ -26,6 +26,10 @@ public class ProjectResource {
   
   public ProjectResource(int projectResourceId, Project projectId, Resource resourceId) {
     this.projectResourceId = projectResourceId;
+    this.projectId = projectId;
+    this.resourceId = resourceId;
+  }
+  public ProjectResource(Project projectId, Resource resourceId) {
     this.projectId = projectId;
     this.resourceId = resourceId;
   }
