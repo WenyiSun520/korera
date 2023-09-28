@@ -10,12 +10,12 @@ public class ProjectResource {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private int projectResourceId;
 
-  @ManyToOne
+  @ManyToOne(cascade=CascadeType.ALL)
   @JoinColumn(name="projectId")
   private Project projectId;
 
 
-  @ManyToOne
+  @ManyToOne(cascade=CascadeType.ALL)
   @JoinColumn(name="ResourceID")
   private Resource resourceId;
 

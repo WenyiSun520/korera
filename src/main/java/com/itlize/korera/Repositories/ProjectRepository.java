@@ -13,16 +13,8 @@ import org.springframework.stereotype.Repository;
 @EnableJpaRepositories
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    //add Resource to Project
 
 
-    //getProjectById(Long projectId)
-
-    //getProjectByUserId(Long userId)
-
-    //update Resource in Project(Long resourceId, Project project)
-
-    //delete Resource in Project(Long resourceId, Long projectId)
-
-    //delete Project in User
+    // find project by name
+    Project getProjectByProjectNumber(String projectName);
 }

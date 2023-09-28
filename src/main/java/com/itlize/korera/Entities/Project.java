@@ -13,7 +13,7 @@ public class Project {
     @Column(name="Project_Id")
     private Long projectId;
 
-    @Column(name="Project_Number")
+    @Column(name="Project_Number", unique=true)
     private String projectNumber;
 
     @Column(name="date_created")
@@ -22,7 +22,7 @@ public class Project {
     @Column(name="last_modified")
     private Date lastModified;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="userId")
     private User user;
 
@@ -30,7 +30,7 @@ public class Project {
     @OneToMany(mappedBy="projectId")
     private Set<ProjectResource> projectResources = new HashSet<>();
 
-    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "project")
     private List<Formula> formulas;
 
     public Project() {
@@ -38,12 +38,11 @@ public class Project {
     }
 
 
-    public Project(String projectNumber, Date dateCreated, Date lastModified, User user, List<Formula> formulas) {
+    public Project(String projectNumber, Date dateCreated, Date lastModified, User user) {
         this.projectNumber = projectNumber;
         this.dateCreated = dateCreated;
         this.lastModified = lastModified;
         this.user = user;
-        this.formulas = formulas;
     }
 
     public Long getProjectId() {
