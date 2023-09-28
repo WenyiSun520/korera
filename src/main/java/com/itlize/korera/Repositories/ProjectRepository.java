@@ -2,6 +2,7 @@ package com.itlize.korera.Repositories;
 
 
 import com.itlize.korera.Entities.Project;
+import com.itlize.korera.Entities.User;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     // find project by name
     Project getProjectByProjectNumber(String projectName);
-    List<Project> getAllProjectsByUserName(String userName);
+    
+    List<Project> findByUser(User user);
     
 }

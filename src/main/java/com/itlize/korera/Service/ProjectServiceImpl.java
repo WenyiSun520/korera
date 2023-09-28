@@ -2,7 +2,7 @@ package com.itlize.korera.Service;
 
 import java.util.List;
 
-import org.apache.catalina.User;
+import com.itlize.korera.Entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itlize.korera.Entities.Project;
@@ -21,10 +21,35 @@ public class ProjectServiceImpl implements ProjectService {
     this.userRepository = userRepository;
   }
 
+  /**
+   * add
+   */
+
   @Override
-  public Project addProject(Project project) {
+  public Project addProject(Project project, String userName) {
+    User user = this.userRepository.findByUsername(userName);
+    project.setUser(user);
     return projectRepository.save(project);
   }
+  
+
+  /**
+   * get
+   */
+  @Override
+  public List<Project> findAllByUserName(String userName) {
+    User user = userRepository.findByUsername(userName);
+    return projectRepository.findByUser(user);
+  }
+
+  @Override
+  public Project getProjectByProjectName(String projectName) {
+    return projectRepository.getProjectByProjectNumber(projectName);
+  }
+
+  /**
+   * update
+   */
 
   @Override
   public void updateProjectNameByName(String oldProjectName, String newProjectName) {
@@ -40,11 +65,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
   }
 
-  @Override
-  public List<Project> getAllProjectsByUserName(String userName) {
-    return projectRepository.getAllProjectsByUserName(userName);
-  }
 
+  /**
+   * delete
+   */
   @Override
   public boolean deleteProjectById(long projectId) {
     Project p = projectRepository.findById(projectId).orElse(null);
