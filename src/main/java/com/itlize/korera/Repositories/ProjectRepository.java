@@ -17,17 +17,13 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 
     //getProjectById(Long projectId)
-    Project get(Long projectId);
+//    Project get(Long projectId);
 
     //getProjectByUserId(Long userId)
-    List<Project> projects(Long userId);
 
     //update Resource in Project(Long resourceId, Project project)
-    void update(Long resourceId, Project project);
 
     //delete Resource in Project(Long resourceId, Long projectId)
-    void delete(Long resourceId, Project project);
 
     //delete Project in User
-    void delete(Long userId);
 }
