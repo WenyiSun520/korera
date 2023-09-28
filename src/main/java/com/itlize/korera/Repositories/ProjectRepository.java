@@ -14,7 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 
-
     // find project by name
     Project getProjectByProjectNumber(String projectName);
+
+    
 }

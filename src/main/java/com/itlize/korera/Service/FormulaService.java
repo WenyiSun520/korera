@@ -17,7 +17,7 @@ public interface FormulaService {
 
   List<Formula> getAllFormulaByProject(Project project);
 
-  Formula updateFormulaType(Formula formula, ColumnTypeEnum type);
+  void updateFormulaType(Formula formula, ColumnTypeEnum type);
 
   boolean deleteFormulaById(long formulaId);
 
