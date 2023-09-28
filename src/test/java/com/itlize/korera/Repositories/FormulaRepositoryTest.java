@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
+import java.util.List;
 
 // import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,5 +73,11 @@ public class FormulaRepositoryTest {
     //assert
     assertEquals("1234567", newerF.getFieldName());
   }
+
+  // @Test
+  // void getAllFormulaByProject() {
+  //   Project p = projectRepository.getProjectByProjectNumber("project3777");
+  //   List<Formula> formulas = formulaRepository.getAllFormulaByProject(p);
+  // }
 
 }
