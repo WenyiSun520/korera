@@ -11,14 +11,23 @@ import com.itlize.korera.Entities.Project;
 @Service
 public interface FormulaService {
 
+  //create
   Formula addFormula(Formula formula);
   
+  //get by formulaId
   Formula findFormulaById(long formuaId);
 
-  List<Formula> getAllFormulaByProject(Project project);
+  //get all by projectId 
+  List<Formula> getAllFormulaByProjectName(String projectName);
 
+  //update formula
+  // void updateFormula(String fieldName, ColumnTypeEnum type, String fieldValue);
   void updateFormulaType(Formula formula, ColumnTypeEnum type);
+  void updateFormulaFieldName(Formula formula, String fieldName);
+  void updateFormulaFieldValue(Formula formula, String value);
 
+
+  //delete formula 
   boolean deleteFormulaById(long formulaId);
 
   
