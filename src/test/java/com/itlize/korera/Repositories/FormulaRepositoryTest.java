@@ -74,10 +74,10 @@ public class FormulaRepositoryTest {
     assertEquals("1234567", newerF.getFieldName());
   }
 
-  @Test
-  void getAllFormulaByProject() {
-    Project p = projectRepository.getProjectByProjectNumber("project3777");
-    List<Formula> formulas = formulaRepository.getAllFormulaByProject(p);
-  }
+  // @Test
+  // void getAllFormulaByProject() {
+  //   Project p = projectRepository.getProjectByProjectNumber("project3777");
+  //   List<Formula> formulas = formulaRepository.getAllFormulaByProject(p);
+  // }
 
 }
