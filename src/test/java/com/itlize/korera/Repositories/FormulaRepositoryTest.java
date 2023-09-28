@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.sql.Date;
 
 // import org.junit.jupiter.api.BeforeEach;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.User;
 
 @SpringBootTest
+@Transactional
 public class FormulaRepositoryTest {
   @Autowired
   private FormulaRepository formulaRepository;
@@ -32,14 +34,24 @@ public class FormulaRepositoryTest {
   void addFormula() {
     // arrange
     Formula f = new Formula();
-    Project p = new Project();
+   // Project p = new Project();
+    //arrange
+    User user = new User("siqichen", "siqi", "chen", "password", new Date(0));
+    Project project = new Project("project092", new Date(0), new Date(0), user);
+    projectRepository.save(project);
+
+    //act
+
     Resource r = new Resource();
     resourceRepository.save(r);
     f.setFieldName("total");
     f.setFieldValue("200");
     f.setFieldType(ColumnTypeEnum.NUMBER);
-    f.setProject(p);
+    f.setProject(project);
     f.setResource(r);
+
+    Project savedProject = projectRepository.save(project);
+
 
     // act
     Formula savedF = formulaRepository.save(f);

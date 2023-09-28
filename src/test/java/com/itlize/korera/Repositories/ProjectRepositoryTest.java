@@ -54,5 +54,6 @@ public class ProjectRepositoryTest {
   @Test
   void getProject(){
     Project p = projectRepository.getProjectByProjectNumber("project092");
+   System.out.println(p.toString());
   }
 }
