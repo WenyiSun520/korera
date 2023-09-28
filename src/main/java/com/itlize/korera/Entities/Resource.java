@@ -12,7 +12,7 @@ public class Resource {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="resourceid")
-    private long ResourceID;
+    private long resourceID;
     @Column(name="resource_name")
     private String resourceName;
     @OneToMany(mappedBy = "resource",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
@@ -36,16 +36,16 @@ public class Resource {
     }
 
     public Resource(long resourceID, String resourceName) {
-        this.ResourceID = resourceID;
+        this.resourceID = resourceID;
         this.resourceName = resourceName;
     }
 
     public long getResourceID() {
-        return ResourceID;
+        return resourceID;
     }
 
     public void setResourceID(long resourceID) {
-        ResourceID = resourceID;
+        this.resourceID = resourceID;
     }
 
     public String getResourceName() {
@@ -53,7 +53,7 @@ public class Resource {
     }
 
     public void setResourceName(String resourceName) {
-        resourceName = resourceName;
+        this.resourceName = resourceName;
     }
 
     public Set<ResourceDetail> getResourceDetails() {
@@ -108,7 +108,7 @@ public class Resource {
     @Override
     public String toString() {
         return "Resource{" +
-                "ResourceID=" + ResourceID +
+                "ResourceID=" + resourceID +
                 ", resourceName='" + resourceName + '\'' +
                 ", resourceDetails=" + resourceDetails +
                 ", subResourceSet=" + subResourceSet +

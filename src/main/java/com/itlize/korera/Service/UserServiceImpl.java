@@ -5,6 +5,8 @@ import com.itlize.korera.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,7 +19,13 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public List<User> getAllUsers() {
-        return this.userRepository.findAll();
+        Iterable<User> allUsers =  this.userRepository.findAll();
+        List<User> users = new ArrayList<>();
+        for(User user: allUsers){
+            users.add(user);
+        }
+
+        return users;
     }
 
     @Override
@@ -25,24 +33,26 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findByUsername(username);
     }
 
-    @Override
-    public Boolean isUserExist(String username) {
-        return this.userRepository.existsUserByUsername(username);
-    }
 
     @Override
     public Boolean saveNewUser(User user) {
-        try{
-            this.userRepository.save(user);
-        }catch(Exception e){
-            System.out.println("Error when saving new user: "+e);
-            return false;
+        String username = user.getUsername();
+        user.setCreated_date(new Date());
+        if(!this.userRepository.existsUserByUsername(username)) {
+            try {
+                this.userRepository.save(user);
+            } catch (Exception e) {
+                System.out.println("Error when saving new user: " + e);
+                return false;
+            }
         }
         return true;
     }
 
     @Override
-    public Boolean deleteUser(User user) {
+    public Boolean deleteUser(String username) {
+        User user = this.userRepository.findByUsername(username);
+        if(user == null) return false;
         try{
             this.userRepository.delete(user);
         }catch(Exception e){

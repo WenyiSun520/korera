@@ -23,7 +23,7 @@ public class ResourceTest {
     @Test
     public void addResource(){
         User manager = this.userRepository.findByUsername("winnieee.sun@gamil.com");
-        Resource resource = new Resource((long)040000,"Masonry");
+        Resource resource = new Resource(040000,"Masonry");
         resource.setLatest_modified_by(manager);
         resource.setCreated_date(new Date());
         resource.setLatest_modified_date(new Date());
@@ -39,8 +39,8 @@ public class ResourceTest {
     public void updateSubResourceList(){
         User manager = this.userRepository.findByUsername("siqi@gamil.com");
         List<Resource> subList = new ArrayList<>();
-        Resource unitMasonry = new Resource((long)042000,"Unit Masonry");
-        Resource stoneMasonry = new Resource((long)044300,"Stone Masonry");
+        Resource unitMasonry = new Resource(042000,"Unit Masonry");
+        Resource stoneMasonry = new Resource(044300,"Stone Masonry");
         subList.add(unitMasonry);
         subList.add(stoneMasonry);
 
