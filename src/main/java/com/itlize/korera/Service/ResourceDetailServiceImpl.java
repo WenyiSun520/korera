@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 @Service
@@ -31,13 +32,23 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
     @Override
     public Set<ResourceDetail> getResourceDetailsByResourceId(long resourceId) {
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
-        return resource.getResourceDetails();
+        if(resource != null) {
+            return resource.getResourceDetails();
+        }
+        return  new HashSet<ResourceDetail>();
     }
+
 
     @Override
     public Set<ResourceDetail> getResourceDetailsByResourceName(String resourceName) {
+
         Resource resource = this.resourceRepository.getResourceByResourceName(resourceName);
-        return resource.getResourceDetails();
+        if(resource != null){
+            return resource.getResourceDetails();
+        }
+        return  new HashSet<ResourceDetail>();
+
+
     }
 
     @Override
@@ -54,9 +65,11 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
             User user = this.userRepository.findByUsername(username);
 
             resourceDetail.setCreated_date(new Date());
+            resourceDetail.setLatest_updated(new Date());
             resourceDetail.setLatest_modified_by(user);
 
             Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
+            resourceDetail.setResource(resource);
             Set<ResourceDetail> resourceDetailSet = resource.getResourceDetails();
             resourceDetailSet.add(resourceDetail);
             resource.setLatest_modified_date(new Date());
@@ -75,10 +88,7 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
 
             User user = this.userRepository.findByUsername(username);
 
-            long resourceDetailID = resourceDetail.getResourceDetailID();
-
-            resourceDetail.setCreated_date(new Date());
-            resourceDetail.setLatest_modified_by(user);
+            String resourceDetailName = resourceDetail.getDetailName();
 
             Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
             Set<ResourceDetail> resourceDetailSet = resource.getResourceDetails();
@@ -86,7 +96,7 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
             Iterator<ResourceDetail> itr = resourceDetailSet.iterator();
             while(itr.hasNext()){
                 ResourceDetail re = itr.next();
-                if( resourceDetailID == re.getResourceDetailID()){
+                if( resourceDetailName.equals(re.getDetailName())){
                     re.setLatest_modified_by(user);
                     re.setLatest_updated(new Date());
                     re.setDetailName(resourceDetail.getDetailName());
@@ -94,7 +104,7 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
                     break;
                 }
             }
-
+System.out.println(resourceDetailSet);
             this.resourceRepository.save(resource);
         }catch(Exception e){
             System.out.println("Error when updating resourceDetail: "+e);
@@ -107,11 +117,12 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
     @Override
     public Boolean deleteResourceDetail(long resourceDetailId, long resourceId) {
         ResourceDetail resourceDetail = this.resourceDetailRepository.findResourceDetailByResourceDetailID(resourceDetailId);
-
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
         Set<ResourceDetail> resourceDetailSet = resource.getResourceDetails();
         try {
             resourceDetailSet.remove(resourceDetail);
+            System.out.println(resourceDetailSet);
+            this.resourceRepository.save(resource);
         }catch(Exception e){
             System.out.println("Error when updating resourceDetail: "+e);
             return false;

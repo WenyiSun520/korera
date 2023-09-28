@@ -10,6 +10,7 @@ public interface ResourceDetailService {
 
     ResourceDetail getResourceDetailByResourceDetailName(String resourceDetailName);
 
+
     Boolean addResourceDetail(ResourceDetail resourceDetail, String username, long resourceId);
 
     Boolean updateResourceDetail(ResourceDetail resourceDetail, String username, long resourceId);

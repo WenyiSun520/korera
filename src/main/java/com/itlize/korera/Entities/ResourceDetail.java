@@ -97,7 +97,7 @@ public class ResourceDetail {
     public String toString() {
         return "ResourceDetail{" +
                 "resourceDetailID=" + resourceDetailID +
-                ", parentResourceID= " + resource.getResourceID() +
+                ", parentResourceID= " + this.resource.getResourceID() +
                 ", detailName='" + detailName + '\'' +
                 ", detail='" + detailDescription + '\'' +
                 ", created_date=" + created_date +
