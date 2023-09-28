@@ -1,8 +1,9 @@
 package com.itlize.korera.Repositories;
 
+import com.itlize.korera.Entities.ColumnTypeEnum;
 import com.itlize.korera.Entities.Formula;
 import com.itlize.korera.Entities.Project;
-
+import com.itlize.korera.Entities.Resource;
 
 // import com.itlize.korera.Entities.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +18,6 @@ import java.util.List;
 @EnableJpaRepositories
 public interface FormulaRepository extends JpaRepository<Formula, Long> {
     List<Formula> findByProject(Project project);
+    Formula findByProjectAndFieldNameAndFieldValueAndFieldTypeAndResource(Project project, String fieldName, String value, ColumnTypeEnum type, Resource resource);
    
 }

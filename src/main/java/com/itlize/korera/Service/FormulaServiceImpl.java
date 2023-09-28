@@ -15,20 +15,26 @@ public class FormulaServiceImpl implements FormulaService{
   
   @Autowired
   private final FormulaRepository formulaRepository;
+
+  @Autowired
+  private final ProjectRepository projectRepository;
   
 
   
-  public FormulaServiceImpl(FormulaRepository formulaRepository) {
+  public FormulaServiceImpl(FormulaRepository formulaRepository, ProjectRepository projectRepository) {
     this.formulaRepository = formulaRepository;
+    this.projectRepository = projectRepository;
   }
 
   @Override
   public Formula addFormula(Formula formula) {
-    formula.getFieldName();
-    formula.getFieldType();
-    formula.getFieldValue();
-    formula.getProject();
-    formula.getResource();
+    Formula exist = formulaRepository.findByProjectAndFieldNameAndFieldValueAndFieldTypeAndResource(
+      formula.getProject(),
+      formula.getFieldName(), 
+      formula.getFieldValue(), 
+      formula.getFieldType(),
+      formula.getResource());
+    if (exist != null) return exist;
     return formulaRepository.save(formula);
 
   }
@@ -37,16 +43,36 @@ public class FormulaServiceImpl implements FormulaService{
   public Formula findFormulaById(long formulaId) {
     return formulaRepository.findById(formulaId).orElse(null);
   }
+  @Override
+  public List<Formula> getAllFormulaByProjectName(String projectName) {
 
-  public List<Formula> getAllFormulaByProject(Project project) {
-    return formulaRepository.findByProject(project);
+    Project p = projectRepository.getProjectByProjectNumber(projectName);
+    return formulaRepository.findByProject(p);
   }
-
+  
+  @Override
   public void updateFormulaType(Formula formula, ColumnTypeEnum type) {
     formula.setFieldType(type);
     formulaRepository.save(formula);
   }
 
+  @Override
+  public void updateFormulaFieldName(Formula formula, String fieldName) {
+    formula.setFieldName(fieldName);
+    formulaRepository.save(formula);
+  }
+
+  @Override
+  public void updateFormulaFieldValue(Formula formula, String value) {
+    formula.setFieldName(value);
+    formulaRepository.save(formula);
+  }
+
+  // public void updateFormula(String fieldName, ColumnTypeEnum type, String fieldValue) {
+
+  // }
+
+  @Override
   public boolean deleteFormulaById(long formulaId){
 
     Formula f = formulaRepository.findById(formulaId).orElse(null);
@@ -56,4 +82,6 @@ public class FormulaServiceImpl implements FormulaService{
     }
     return !formulaRepository.exists(Example.of(f));
   }
+
+  
 }
