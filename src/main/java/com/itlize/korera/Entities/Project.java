@@ -22,7 +22,7 @@ public class Project {
     @Column(name="last_modified")
     private Date lastModified;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name="userId")
     private User user;
 
@@ -93,9 +93,9 @@ public class Project {
         this.projectResources.add(projectResource);
     }
 
-    public void setProjectResourceSet(Set<ProjectResource> projectResources) {
-        this.projectResources = projectResources;
-    }
+    // public void setProjectResourceSet(Set<ProjectResource> projectResources) {
+    //     this.projectResources = projectResources;
+    // }
 
 
 

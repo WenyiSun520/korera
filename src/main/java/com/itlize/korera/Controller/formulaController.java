@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +34,14 @@ public class formulaController {
     this.projectService = projectService;
   }
 
-  @GetMapping("/{projects}/{projectName}/formulas")
-  public ResponseEntity<List<Formula>> getAllFormula(@PathVariable("projectName") String projectName) {
+  @GetMapping("/formulas")
+  public ResponseEntity<List<Formula>> getAll() {
+    List<Formula> formulas = formulaService.getAllFormulas();
+    return ResponseEntity.ok().body(formulas);
+  }
+
+  @GetMapping("/search-by-project")
+  public ResponseEntity<List<Formula>> getAllFormula(@RequestParam(value="projectname") String projectName) {
     Project project = projectService.getProjectByProjectName(projectName);
     if (project == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,17 +53,18 @@ public class formulaController {
     return ResponseEntity.ok().body(formulas);
   }
 
-  @PostMapping("/projects/{projectName}/saveNewFormula")
-  public ResponseEntity<String> saveFormula(@PathVariable("projectName") String projectNameString,
+  @PostMapping("/")
+  public ResponseEntity<String> saveFormula(
       @RequestBody Formula formula) {
-    if (formula != null) {
+    Formula newFormula = formulaService.addFormula(formula);
+    if (newFormula != null) {
       return ResponseEntity.ok().body("new formula has been added");
     } else {
       return ResponseEntity.status(501).body("error when saving new formula");
     }
   }
 
-  @PostMapping("/{formulaId}/updateFormulaType/{type}")
+  @PutMapping("/update-type/{formulaId}/{type}")
   public ResponseEntity<String> updateFormulaFieldType(
       @PathVariable("formulaId") long formulaId, @PathVariable("type") ColumnTypeEnum type) {
     Formula formula = formulaService.findFormulaById(formulaId);
@@ -67,7 +75,7 @@ public class formulaController {
     return ResponseEntity.ok().body("formula type has been updated");
   }
 
-  @PostMapping("/{formulaId}/updateFormulaType/{fieldName}")
+  @PutMapping("/update-name/{formulaId}/{fieldName}")
   public ResponseEntity<String> updateFormulaFieldName(
       @PathVariable("formulaId") long formulaId, @PathVariable("fieldName") String fieldName) {
     Formula formula = formulaService.findFormulaById(formulaId);
@@ -78,7 +86,7 @@ public class formulaController {
     return ResponseEntity.ok().body("formula name has been updated");
   }
 
-  @PostMapping("/{formulaId}/updateFormulaValue/{fieldValue}")
+  @PutMapping("/update-value/{formulaId}/{fieldValue}")
   public ResponseEntity<String> updateFormulaFieldValue(
       @PathVariable("formulaId") long formulaId, @PathVariable("fieldValue") String fieldValue) {
     Formula formula = formulaService.findFormulaById(formulaId);
@@ -89,7 +97,7 @@ public class formulaController {
     return ResponseEntity.ok().body("formula value has been updated");
   }
 
-  @DeleteMapping("/delete/{formulaId}")
+  @DeleteMapping("/{formulaId}")
   public ResponseEntity<String> deleteFormulaById(@PathVariable("formulaId") long formulaId) {
     if (formulaService.deleteFormulaById(formulaId)) {
       return ResponseEntity.ok().body("formula has been deleted");

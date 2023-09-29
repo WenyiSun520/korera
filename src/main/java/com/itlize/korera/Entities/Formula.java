@@ -26,7 +26,7 @@ public class Formula {
     @Column(name="value")
     private String fieldValue;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="projectId")
     private Project project;
 

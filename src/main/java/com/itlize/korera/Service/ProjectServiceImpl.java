@@ -29,9 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
    */
 
   @Override
-  public Project addProject(Project project, String userName) {
-    User user = this.userRepository.findByUsername(userName);
-    project.setUser(user);
+  public Project addProject(Project project) {
     return projectRepository.save(project);
   }
   
@@ -39,6 +37,11 @@ public class ProjectServiceImpl implements ProjectService {
   /**
    * get
    */
+
+  @Override
+  public List<Project> getAll() {
+    return projectRepository.findAll();
+  }
   @Override
   public List<Project> findAllByUserName(String userName) {
     User user = userRepository.findByUsername(userName);

@@ -19,6 +19,7 @@ public interface FormulaService {
 
   //get all by projectId 
   List<Formula> getAllFormulaByProjectName(String projectName);
+  List<Formula> getAllFormulas();
 
   //update formula
   // void updateFormula(String fieldName, ColumnTypeEnum type, String fieldValue);
