@@ -41,6 +41,11 @@ public class FormulaServiceImpl implements FormulaService{
   }
 
   @Override
+  public List<Formula> getAllFormulas(){
+    return formulaRepository.findAll();
+  }
+
+  @Override
   public Formula findFormulaById(long formulaId) {
     return formulaRepository.findById(formulaId).orElse(null);
   }

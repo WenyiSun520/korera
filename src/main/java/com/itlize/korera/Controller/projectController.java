@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +19,7 @@ import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Service.ProjectService;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping("/projects")
 public class projectController {
   
   private final ProjectService projectService;
@@ -26,17 +28,24 @@ public class projectController {
     this.projectService = projectService;
   }
 
-  @GetMapping("/{username}/projects/addNewProject")
-  public ResponseEntity<String> addProject(@PathVariable("username") String userName, @RequestBody Project project) {
-    Project newProject = projectService.addProject(project, userName);
+  @PostMapping("/")
+  public ResponseEntity<String> addProject(@RequestBody Project project) {
+    Project newProject = projectService.addProject(project);
     if (newProject != null) {
       return ResponseEntity.ok().body("new project has been saved");
     }
     return ResponseEntity.status(501).body("error when saving new project");
   }
 
-  @GetMapping("/user/{username}")
-  public ResponseEntity<List<Project>> getProjectByUserName(@PathVariable("username") String userName) {
+  @GetMapping("/projects")
+  public ResponseEntity<List<Project>> getAllProject() {
+    List<Project> projects = projectService.getAll();
+    return ResponseEntity.ok().body(projects);
+  }
+
+
+  @GetMapping("/search-by-username")
+  public ResponseEntity<List<Project>> getProjectByUserName(@RequestParam(value="userName") String userName) {
     List<Project> projects = projectService.findAllByUserName(userName);
     if (!projects.isEmpty()) {
       return ResponseEntity.ok().body(projects);
@@ -46,17 +55,17 @@ public class projectController {
   }
 
   @GetMapping("/{projectName}")
-  public ResponseEntity<Project> getProjectByProjectName(@PathVariable("projectName") String projectName) {
+  public ResponseEntity<?> getProjectByProjectName(@PathVariable("projectName") String projectName) {
     Project project = projectService.getProjectByProjectName(projectName);
     if (project != null) {
       return ResponseEntity.ok().body(project);
     }else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>("Project not found", HttpStatus.NOT_FOUND);
     }
   }
 
 
-  @PutMapping("/{projectName}/update")
+  @PutMapping("/{oldProjectName}")
   public ResponseEntity<String> updateProjectName(@PathVariable String oldProjectName, @RequestBody Project project) {
     try {
       String newProjectName = project.getProjectNumber();
@@ -67,12 +76,13 @@ public class projectController {
     }
   }
 
-  @DeleteMapping("/username/deleteProject/delete/{projectId}")
-  public ResponseEntity<String> deleteProject(@PathVariable long projectId) {
-    if (projectService.deleteProjectById(projectId)) {
+  @DeleteMapping("/{projectName}")
+  public ResponseEntity<String> deleteProject(@PathVariable String projectName) {
+    Project project = projectService.getProjectByProjectName(projectName);
+    if (projectService.deleteProjectById(project.getProjectId())) {
       return ResponseEntity.ok().body("project has been deleted");
     }
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>("Project not found", HttpStatus.NOT_FOUND);
 
   }
 

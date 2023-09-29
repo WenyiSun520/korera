@@ -11,11 +11,12 @@ import com.itlize.korera.Entities.User;
 public interface ProjectService {
 
   //create
-  Project addProject(Project project, String userName);
+  Project addProject(Project project);
 
   //get
   List<Project> findAllByUserName(String userName);
   Project getProjectByProjectName(String projectName);
+  List<Project> getAll();
 
   //update project name
   void updateProjectNameByName(String oldProjectName, String newProjectName);
