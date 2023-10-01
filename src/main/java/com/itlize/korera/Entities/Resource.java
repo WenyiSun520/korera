@@ -1,5 +1,7 @@
 package com.itlize.korera.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.tree.Tree;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,14 @@ public class Resource {
     @Column(name="resource_name")
     private String resourceName;
     @OneToMany(mappedBy = "resource",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<ResourceDetail> resourceDetails = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "parent_resource_id")
+    @JsonBackReference
     private Resource parentResource;
     @OneToMany(mappedBy = "parentResource", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Resource> subResourceSet = new HashSet<>();
 
     @OneToMany(mappedBy="resource")
@@ -28,6 +33,7 @@ public class Resource {
 
 
     @OneToMany(mappedBy="resourceId")
+
     private Set<ProjectResource> projectResources;
 
     @Column(name = "created_date")

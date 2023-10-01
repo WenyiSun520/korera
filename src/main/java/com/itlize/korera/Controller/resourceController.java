@@ -2,10 +2,12 @@ package com.itlize.korera.Controller;
 
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.ErrorHandler.InvalidInputException;
 import com.itlize.korera.Service.ResourceServiceImpl;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,29 +24,37 @@ public class resourceController {
         this.resourceService = resourceService;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Resource>> getAllResource(){
+        List<Resource> list = this.resourceService.getAllResource();
+        return ResponseEntity.ok().body(list);
+    }
     @GetMapping("/resource_name")
-    public ResponseEntity<List<Resource>> getResourcesContainsName(@RequestParam(value="resource_name") String name){
-
-        List<Resource> list = this.resourceService.getResourcesByResourceNameContains(name);
-
+    public ResponseEntity<List<Resource>> getResourcesContainsName(@RequestParam(value="q") String query){
+        if( query.isEmpty())throw new InvalidInputException("user input is invalid");
+        List<Resource> list = this.resourceService.getResourcesByResourceNameContains( query);
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<Resource> getResourcesByID(@RequestParam(value="resource_id")long resourceID){
-        Resource resource= this.resourceService.getResourceByID(resourceID);
+    @GetMapping("/resource_id")
+    public ResponseEntity<Resource> getResourcesByID(@RequestParam(value="q")long query){
+        if((Long)  query == null)throw new InvalidInputException("user input is invalid");
+        Resource resource= this.resourceService.getResourceByID( query);
         return ResponseEntity.ok().body(resource);
     }
     @GetMapping("/sub_resource")
-    public ResponseEntity<Set<Resource>> getSubResourcesByID(@RequestParam(value="resource_id")long resourceID){
-        Set<Resource> set = this.resourceService.getAllSubResourceByParentResource(resourceID);
+    public ResponseEntity<Set<Resource>> getSubResourcesByID(@RequestParam(value="q")Long  query){
+        if( query == null)throw new InvalidInputException("user input is invalid");
+        Set<Resource> set = this.resourceService.getAllSubResourceByParentResource( query);
         return ResponseEntity.ok().body(set);
     }
 
    @PostMapping("/{username}/add_new_resource")
-    public ResponseEntity<String> addResource(@PathVariable("username") String username, @RequestBody Resource resource){
+    public ResponseEntity<String> addResource(@PathVariable("username") String username, @RequestBody Resource resource)
+                          {
         //System.out.println(resource);
-        if(this.resourceService.saveNewResource(resource, username)) {
+
+       if(this.resourceService.saveNewResource(resource, username)) {
             return ResponseEntity.ok().body("new resource is saved successfully!");
         }else{
             return ResponseEntity.status(501).body("Server Error when saving new resource!");

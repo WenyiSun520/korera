@@ -1,6 +1,7 @@
 package com.itlize.korera.Controller;
 
 import com.itlize.korera.Entities.ResourceDetail;
+import com.itlize.korera.ErrorHandler.InvalidInputException;
 import com.itlize.korera.Service.ResourceDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -22,14 +23,16 @@ public class resourceDetailController {
     }
 
     @GetMapping("/search_by_id")
-    public ResponseEntity<String> getResourceDetailByResourceID(@RequestParam(value = "resource_id") long resourceId) {
-        Set<ResourceDetail> s = this.resourceDetailService.getResourceDetailsByResourceId(resourceId);
-        return ResponseEntity.ok().body(s.toString());
+    public ResponseEntity<Set<ResourceDetail>> getResourceDetailByResourceID(@RequestParam(value = "q") long  query) {
+        if((Long)query == null)throw new InvalidInputException("user input is invalid");
+        Set<ResourceDetail> s = this.resourceDetailService.getResourceDetailsByResourceId( query);
+        return ResponseEntity.ok().body(s);
     }
 
     @GetMapping("/search_by_name")
-    public ResponseEntity<String> getResourceDetailByResourceName(@RequestParam(value = "resource_name") String resourceName) {
-        Set<ResourceDetail> set = this.resourceDetailService.getResourceDetailsByResourceName(resourceName);
+    public ResponseEntity<String> getResourceDetailByResourceName(@RequestParam(value = "q") String query) {
+        if( query.isEmpty())throw new InvalidInputException("user input is invalid");
+        Set<ResourceDetail> set = this.resourceDetailService.getResourceDetailsByResourceName( query);
         return ResponseEntity.ok().body(set.toString());
     }
 

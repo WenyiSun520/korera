@@ -18,6 +18,7 @@ public class ResourceDetail {
     private long resourceDetailID;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "resourceid")
+    @JsonBackReference
     private Resource resource;
     @Column(name="name", nullable = false)
     private String detailName;

@@ -2,6 +2,7 @@ package com.itlize.korera.Service;
 
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.ErrorHandler.PathVariableNotFound;
 import com.itlize.korera.Repositories.ResourceRepository;
 import com.itlize.korera.Repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository resourceRepository;
     private final UserRepository userRepository;
 
+
     public ResourceServiceImpl(ResourceRepository resourceRepository, UserRepository userRepository) {
         this.resourceRepository = resourceRepository;
         this.userRepository = userRepository;
@@ -27,21 +29,13 @@ public class ResourceServiceImpl implements ResourceService {
 //        return null;
 //    }
 
-    @Override
-    public Set<Resource> getAllSubResourceByParentResource(long resourceID) {
-        Resource parentResource = this.resourceRepository.getResourceByResourceID(resourceID);
-        Set<Resource> set = this.resourceRepository.getResourcesByParentResource(parentResource);
-        return set;
-    }
 
+    public List<Resource> getAllResource() {
+        return this.resourceRepository.findAll();
+    }
     @Override
     public List<Resource> getResourcesByResourceNameContains(String resourceName) {
         return this.resourceRepository.getResourcesByResourceNameContainsIgnoreCase(resourceName);
-    }
-
-    @Override
-    public Resource getResourceByName(String resourceName) {
-        return this.resourceRepository.getResourceByResourceName(resourceName);
     }
 
     @Override
@@ -50,8 +44,16 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public Set<Resource> getAllSubResourceByParentResource(long resourceID) {
+        Resource parentResource = this.resourceRepository.getResourceByResourceID(resourceID);
+        Set<Resource> set = this.resourceRepository.getResourcesByParentResource(parentResource);
+        return set;
+    }
+
+    @Override
     public Boolean saveNewResource(Resource resource, String username) {
         User user = this.userRepository.findByUsername(username);
+        if(user == null) throw new PathVariableNotFound("username");
         String resourceName = resource.getResourceName();
         if(this.resourceRepository.existsResourceByResourceName(resourceName)){
             return false;
@@ -67,6 +69,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public Boolean updateResource(Resource resource, String username) {
         User user = this.userRepository.findByUsername(username);
+        if(user == null) throw new PathVariableNotFound("username");
         long resourceID = resource.getResourceID();
         Resource oldResource = this.resourceRepository.getResourceByResourceID(resourceID);
         if(oldResource != null) {
@@ -86,7 +89,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public Boolean deleteResourceByName(String resourceName) {
         Resource resource = this.resourceRepository.getResourceByResourceName(resourceName);
-        if(resource == null)return false;
+        if(resource == null) throw new PathVariableNotFound("resourceName");
         this.resourceRepository.delete(resource);
         return true;
     }
@@ -94,7 +97,7 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public Boolean deleteResourceByID(long resourceID) {
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceID);
-        if(resource == null)return false;
+        if(resource == null) throw new PathVariableNotFound("resourceID");
         try{
             this.resourceRepository.delete(resource);
         }catch(Exception e){

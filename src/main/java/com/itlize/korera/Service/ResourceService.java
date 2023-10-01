@@ -10,10 +10,13 @@ import java.util.Set;
 
 public interface ResourceService {
 //   List<Resource> getAllResourceByProjectID(long projectid);
+
+
+
    Set<Resource> getAllSubResourceByParentResource(long resourceID);
    List<Resource> getResourcesByResourceNameContains(String resourceName);
 
-   Resource getResourceByName(String resourceName);
+
    Resource getResourceByID(long resourceID);
 
    Boolean saveNewResource(Resource resource, String username);
