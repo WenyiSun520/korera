@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itlize.korera.Entities.Formula;
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Service.ProjectService;
 
@@ -48,6 +49,9 @@ public class projectController {
   public ResponseEntity<List<Project>> getProjectByUserName(@RequestParam(value="userName") String userName) {
     List<Project> projects = projectService.findAllByUserName(userName);
     if (!projects.isEmpty()) {
+      // for (Project project: projects) {
+      //   project.getFormulas().size(); 
+      // }
       return ResponseEntity.ok().body(projects);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);

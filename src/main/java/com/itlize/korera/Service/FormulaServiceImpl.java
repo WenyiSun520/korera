@@ -1,6 +1,7 @@
 package com.itlize.korera.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -83,10 +84,12 @@ public class FormulaServiceImpl implements FormulaService{
 
     Formula f = formulaRepository.findById(formulaId).orElse(null);
 
-    if (f != null) {
-      formulaRepository.delete(f);
+    if (f == null) {
+      return false;
     }
-    return !formulaRepository.exists(Example.of(f));
+    formulaRepository.delete(formulaRepository.findById(formulaId).orElse(null));
+    
+    return true;
   }
 
   
