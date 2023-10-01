@@ -27,7 +27,7 @@ public class User {;
     private Date created_date;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    // @JsonManagedReference
+    @JsonIgnore
     private List<Project> projects;
 
     public User() {
@@ -106,10 +106,10 @@ public class User {;
                 ", created_date=" + created_date +
                 '}';
     }
-    public List<Project> getProjects() {
-        return projects;
-    }
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
+    // public List<Project> getProjects() {
+    //     return projects;
+    // }
+    // public void setProjects(List<Project> projects) {
+    //     this.projects = projects;
+    // }
 }
