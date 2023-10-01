@@ -3,6 +3,7 @@ package com.itlize.korera.Service;
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.ResourceDetail;
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.ErrorHandler.PathVariableNotFound;
 import com.itlize.korera.Repositories.ResourceDetailRepository;
 import com.itlize.korera.Repositories.ResourceRepository;
 import com.itlize.korera.Repositories.UserRepository;
@@ -32,10 +33,12 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
     @Override
     public Set<ResourceDetail> getResourceDetailsByResourceId(long resourceId) {
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
+
         if(resource != null) {
             return resource.getResourceDetails();
+        }else{
+            throw new PathVariableNotFound("resource");
         }
-        return  new HashSet<ResourceDetail>();
     }
 
 
@@ -45,10 +48,9 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
         Resource resource = this.resourceRepository.getResourceByResourceName(resourceName);
         if(resource != null){
             return resource.getResourceDetails();
+        }else{
+            throw new PathVariableNotFound("resource");
         }
-        return  new HashSet<ResourceDetail>();
-
-
     }
 
     @Override
@@ -63,13 +65,14 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
         try {
 
             User user = this.userRepository.findByUsername(username);
+            Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
+            if(user == null || resource == null) throw new PathVariableNotFound("username or resource");
 
             resourceDetail.setCreated_date(new Date());
             resourceDetail.setLatest_updated(new Date());
             resourceDetail.setLatest_modified_by(user);
-
-            Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
             resourceDetail.setResource(resource);
+
             Set<ResourceDetail> resourceDetailSet = resource.getResourceDetails();
             resourceDetailSet.add(resourceDetail);
             resource.setLatest_modified_date(new Date());
@@ -87,16 +90,16 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
         try {
 
             User user = this.userRepository.findByUsername(username);
-
-            String resourceDetailName = resourceDetail.getDetailName();
-
             Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
+            if(user == null || resource == null) throw new PathVariableNotFound("username or resource");
+
+            long resourceDetailName = resourceDetail.getResourceDetailID();
             Set<ResourceDetail> resourceDetailSet = resource.getResourceDetails();
 
             Iterator<ResourceDetail> itr = resourceDetailSet.iterator();
             while(itr.hasNext()){
                 ResourceDetail re = itr.next();
-                if( resourceDetailName.equals(re.getDetailName())){
+                if( resourceDetailName == re.getResourceDetailID()){
                     re.setLatest_modified_by(user);
                     re.setLatest_updated(new Date());
                     re.setDetailName(resourceDetail.getDetailName());
@@ -104,7 +107,7 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
                     break;
                 }
             }
-System.out.println(resourceDetailSet);
+        System.out.println(resourceDetailSet);
             this.resourceRepository.save(resource);
         }catch(Exception e){
             System.out.println("Error when updating resourceDetail: "+e);
@@ -118,6 +121,8 @@ System.out.println(resourceDetailSet);
     public Boolean deleteResourceDetail(long resourceDetailId, long resourceId) {
         ResourceDetail resourceDetail = this.resourceDetailRepository.findResourceDetailByResourceDetailID(resourceDetailId);
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
+        if(resourceDetail == null || resource == null) throw new PathVariableNotFound("resourceId or resourceDetailId");
+
         Set<ResourceDetail> resourceDetailSet = resource.getResourceDetails();
         try {
             resourceDetailSet.remove(resourceDetail);

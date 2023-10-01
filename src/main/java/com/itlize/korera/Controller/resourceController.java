@@ -61,15 +61,39 @@ public class resourceController {
         }
    }
 
-//    @PutMapping ("/{username}/update_resource")
-//    public ResponseEntity<String> updateResource(@PathVariable("username") String username, @RequestBody Resource resource){
-//       if(this.resourceService.updateResource(resource,username)){
-//           return ResponseEntity.ok().body("updated resource is saved successfully!");
-//       }else{
-//           return ResponseEntity.status(501).body("Server Error when update resource. id: "+ resource.getResourceID());
-//       }
-//
-//    }
+    @PutMapping ("/{username}/{resourceId}/update_resource_name")
+    public ResponseEntity<String> updateResourceName(@PathVariable("username") String username,@PathVariable("resourceId") long resourceId, @RequestBody Resource resource){
+       String newname = resource.getResourceName();
+       if(this.resourceService.updateResourceName(resourceId,username, newname)){
+           return ResponseEntity.ok().body("updated resource name is saved successfully!");
+       }else{
+           return ResponseEntity.status(501).body("Server Error when update resource. id: "+ resourceId);
+       }
+
+
+    }
+
+    @PutMapping ("/{username}/{resourceId}/update_parent_resource")
+    public ResponseEntity<String> updateParentResource(@PathVariable("username") String username,@PathVariable("resourceId") long resourceId, @RequestBody Resource resource){
+        long parentResourceId = resource.getResourceID();
+        if(this.resourceService.updateParentResourceId(resourceId,username, parentResourceId)){
+            return ResponseEntity.ok().body("updated resource is saved successfully!");
+        }else{
+            return ResponseEntity.status(501).body("Server Error when update resource. id: "+ resourceId);
+        }
+
+    }
+
+    @PostMapping ("/{username}/{parentResourceId}/update_subresource_set")
+    public ResponseEntity<String> updateSubResourceSet(@PathVariable("username") String username,
+                                                 @PathVariable("parentResourceId") long parentResourceId, @RequestBody Resource resource){
+       if(this.resourceService.updateSubResourceSet(parentResourceId, resource, username)){
+           return ResponseEntity.ok().body("updated resource is saved successfully!");
+       }else{
+           return ResponseEntity.status(501).body("Server Error when update resource. id: "+ resource.getResourceID());
+       }
+
+    }
    @DeleteMapping("/delete_resource/{resourceID}")
    public ResponseEntity<String> deleteResource(@PathVariable long resourceID){
         if( this.resourceService.deleteResourceByID(resourceID)){

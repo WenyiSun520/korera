@@ -31,6 +31,15 @@ public class ResourceDetail {
     @JoinColumn(name = "latest_modified_user_id")
     private User latest_modified_by;
 
+    public ResourceDetail() {
+    }
+
+    public ResourceDetail(long resourceDetailID, Resource resource, String detailName, String detailDescription) {
+        this.resourceDetailID = resourceDetailID;
+        this.resource = resource;
+        this.detailName = detailName;
+        this.detailDescription = detailDescription;
+    }
 
     public long getResourceDetailID() {
         return resourceDetailID;

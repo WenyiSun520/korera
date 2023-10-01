@@ -53,6 +53,14 @@ public class Resource {
         this.resourceName = resourceName;
     }
 
+    public Resource(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
+    public Resource(long resourceID) {
+        this.resourceID = resourceID;
+    }
+
     public long getResourceID() {
         return resourceID;
     }
@@ -128,6 +136,14 @@ public class Resource {
         this.projectResources = projectResources;
     }
 
+    public Set<Formula> getFormulas() {
+        return formulas;
+    }
+
+    public void setFormulas(Set<Formula> formulas) {
+        this.formulas = formulas;
+    }
+
     @Override
     public String toString() {
         return "Resource{" +
@@ -138,6 +154,7 @@ public class Resource {
                 ", created_date=" + created_date +
                 ", latest_modified_date=" + latest_modified_date +
                 ", latest_modified_by=" + latest_modified_by +
+                ", formulas=" +  formulas +
                 '}';
     }
 
