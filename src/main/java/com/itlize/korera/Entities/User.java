@@ -2,8 +2,10 @@ package com.itlize.korera.Entities;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "USER")
@@ -24,7 +26,8 @@ public class User {;
     @Column(name ="created_date")
     private Date created_date;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    // @JsonManagedReference
     private List<Project> projects;
 
     public User() {
@@ -89,6 +92,8 @@ public class User {;
     public Date getCreated_date() {
         return created_date;
     }
+    
+
 
     @Override
     public String toString() {
@@ -100,5 +105,11 @@ public class User {;
                 ", password='" + password + '\'' +
                 ", created_date=" + created_date +
                 '}';
+    }
+    public List<Project> getProjects() {
+        return projects;
+    }
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

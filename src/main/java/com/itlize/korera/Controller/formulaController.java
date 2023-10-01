@@ -101,9 +101,9 @@ public class formulaController {
   public ResponseEntity<String> deleteFormulaById(@PathVariable("formulaId") long formulaId) {
     if (formulaService.deleteFormulaById(formulaId)) {
       return ResponseEntity.ok().body("formula has been deleted");
-    } else {
-      return new ResponseEntity<>("Formula not found", HttpStatus.NOT_FOUND);
-    }
+    } 
+    return new ResponseEntity<>("Formula not found", HttpStatus.NOT_FOUND);
+    
   }
 
 }

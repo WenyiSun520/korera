@@ -1,5 +1,7 @@
 package com.itlize.korera.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 // import java.util.*;
@@ -14,10 +16,11 @@ import jakarta.persistence.*;
 public class Formula {
 
     @Id
+    @Column(name="formula_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long formulaId;
 
-    @Column(name="field Name")
+    @Column(name="field_name")
     private String fieldName;
 
     @Column(name="type")
@@ -27,11 +30,12 @@ public class Formula {
     private String fieldValue;
 
     @ManyToOne
-    @JoinColumn(name="projectId")
+    @JoinColumn(name="project_id")
+    @JsonBackReference
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name="ResourceID")
+    @JoinColumn(name="resourceid")
     private Resource resource;
 
     public Formula(){

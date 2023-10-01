@@ -4,16 +4,20 @@ import jakarta.persistence.*;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="Project")
 public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="Project_Id")
+    @Column(name="project_id")
     private Long projectId;
 
-    @Column(name="Project_Number", unique=true)
+    @Column(name="project_number", unique=true)
     private String projectNumber;
 
     @Column(name="date_created")
@@ -22,15 +26,17 @@ public class Project {
     @Column(name="last_modified")
     private Date lastModified;
 
-    @ManyToOne()
-    @JoinColumn(name="userId")
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name="userid")
+    @JsonIgnore
     private User user;
 
 
     @OneToMany(mappedBy="projectId")
     private Set<ProjectResource> projectResources = new HashSet<>();
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Formula> formulas;
 
     public Project() {
@@ -97,6 +103,7 @@ public class Project {
     //     this.projectResources = projectResources;
     // }
 
+    
 
 
     @Override
@@ -110,5 +117,15 @@ public class Project {
 //                ", resources=" + resources +
                 ", formulas=" + formulas +
                 '}';
+    }
+
+
+    public List<Formula> getFormulas() {
+        return formulas;
+    }
+
+
+    public void setFormulas(List<Formula> formulas) {
+        this.formulas = formulas;
     }
 }

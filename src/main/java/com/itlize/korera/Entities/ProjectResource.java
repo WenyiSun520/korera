@@ -7,16 +7,17 @@ import jakarta.persistence.*;
 public class ProjectResource {
   
   @Id
+  @Column(name="project_resource_id")
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private int projectResourceId;
 
   @ManyToOne(cascade=CascadeType.ALL)
-  @JoinColumn(name="projectId")
+  @JoinColumn(name="project_id")
   private Project projectId;  //projectId == project
 
 
   @ManyToOne(cascade=CascadeType.ALL)
-  @JoinColumn(name="ResourceID")
+  @JoinColumn(name="resourceid")
   private Resource resourceId; //resourceId == resource
 
   public ProjectResource() {
