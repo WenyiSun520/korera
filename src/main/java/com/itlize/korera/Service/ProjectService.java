@@ -2,6 +2,7 @@ package com.itlize.korera.Service;
 
 import java.util.List;
 
+import com.itlize.korera.Entities.ProjectInfoDTO;
 import org.springframework.stereotype.Service;
 
 import com.itlize.korera.Entities.Project;
@@ -16,7 +17,7 @@ public interface ProjectService {
   //get
   List<Project> findAllByUserName(String userName);
   Project getProjectByProjectName(String projectName);
-  List<Project> getAll();
+  List<ProjectInfoDTO> getAll();
 
   //update project name
   void updateProjectNameByName(String oldProjectName, String newProjectName);

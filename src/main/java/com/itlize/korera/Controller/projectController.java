@@ -2,6 +2,7 @@ package com.itlize.korera.Controller;
 
 import java.util.List;
 
+import com.itlize.korera.Entities.ProjectInfoDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,8 +40,8 @@ public class projectController {
   }
 
   @GetMapping("/projects")
-  public ResponseEntity<List<Project>> getAllProject() {
-    List<Project> projects = projectService.getAll();
+  public ResponseEntity<List<ProjectInfoDTO>> getAllProject() {
+    List<ProjectInfoDTO> projects = projectService.getAll();
     return ResponseEntity.ok().body(projects);
   }
 

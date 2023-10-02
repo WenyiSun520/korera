@@ -3,6 +3,7 @@ package com.itlize.korera.Repositories;
 
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Entities.ProjectDTO;
+import com.itlize.korera.Entities.ProjectInfoDTO;
 import com.itlize.korera.Entities.User;
 
 import java.util.*;
@@ -27,6 +28,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
             "FROM Project proj " +
             "WHERE proj.user = :user")
     List<ProjectDTO>  findProjectDTOsByUser(@Param("user") User user);
+
     List<Project> findByUser(User user);
 
     
