@@ -31,11 +31,12 @@ public class Formula {
 
     @ManyToOne
     @JoinColumn(name="project_id")
-    @JsonBackReference
+    @JsonBackReference("project-formula")
     private Project project;
 
     @ManyToOne
     @JoinColumn(name="resourceid")
+    @JsonBackReference("resource-formula")
     private Resource resource;
 
     public Formula(){

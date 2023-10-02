@@ -23,12 +23,14 @@ public class User {;
     @Column(name ="lname")
     private String lname;
     @Column(name ="password")
+    @JsonIgnore
     private String password;
     @Column(name ="created_date")
     private Date created_date;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JsonBackReference
+   @JsonManagedReference("project-user")
+    //@JsonBackReference("project-user")
 //    @JsonIgnore
     private List<Project> projects;
 
@@ -39,6 +41,14 @@ public class User {;
         this.username = username;
         this.password = password;
         this.created_date = created_date;
+    }
+
+    public User(String username, String password, String fname, String lname) {
+        this.username = username;
+        this.password = password;
+        this.fname = fname;
+        this.lname = lname;
+
     }
 
     public User(String username, String fname, String lname, String password, Date created_date) {

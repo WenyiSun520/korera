@@ -28,7 +28,8 @@ public class Project {
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name="userid")
-    @JsonManagedReference
+    //@JsonManagedReference("project-user")
+    @JsonBackReference("project-user")
 //    @JsonIgnore
     private User user;
 
@@ -37,7 +38,7 @@ public class Project {
     private Set<ProjectResource> projectResources = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference("project-formula")
     private List<Formula> formulas;
 
     public Project() {

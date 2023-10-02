@@ -18,17 +18,18 @@ public class Resource {
     @Column(name="resource_name")
     private String resourceName;
     @OneToMany(mappedBy = "resource",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("resource-resourcedetail")
     private Set<ResourceDetail> resourceDetails = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "parent_resource_id")
-    @JsonBackReference
+    @JsonBackReference("resource-subresource")
     private Resource parentResource;
     @OneToMany(mappedBy = "parentResource", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("resource-subresource")
     private Set<Resource> subResourceSet = new HashSet<>();
 
     @OneToMany(mappedBy="resource")
+    @JsonManagedReference("resource-formula")
     private Set<Formula> formulas;
 
 
@@ -44,6 +45,8 @@ public class Resource {
     @ManyToOne
     @JoinColumn(name = "modified_by_user_id")
     private User latest_modified_by;
+
+
 
     public Resource() {
     }
