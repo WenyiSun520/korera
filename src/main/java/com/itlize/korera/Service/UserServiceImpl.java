@@ -1,6 +1,10 @@
 package com.itlize.korera.Service;
 
+import com.itlize.korera.Entities.ProjectDTO;
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.Entities.UserDTO;
+import com.itlize.korera.ErrorHandler.PathVariableNotFound;
+import com.itlize.korera.Repositories.ProjectRepository;
 import com.itlize.korera.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,20 +16,44 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository, ProjectRepository projectRepository){
         this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
     }
+//    @Override
+//    public List<User> getAllUsers() {
+//        Iterable<User> allUsers =  this.userRepository.findAll();
+//        List<User> users = new ArrayList<>();
+//        for(User user: allUsers){
+//            users.add(user);
+//        }
+//
+//        return users;
+//    }
+
     @Override
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         Iterable<User> allUsers =  this.userRepository.findAll();
-        List<User> users = new ArrayList<>();
+        List<UserDTO> users = new ArrayList<>();
         for(User user: allUsers){
-            users.add(user);
+            List<ProjectDTO> projectDTOS = this.projectRepository.findProjectDTOsByUser(user);
+            UserDTO userDTO = new UserDTO(user.getUserID(),user.getUsername(),user.getCreated_date(),projectDTOS);
+            users.add(userDTO);
         }
 
         return users;
+    }
+
+    @Override
+    public UserDTO getUserProfileWithProject(String username) {
+        User user = this.userRepository.findByUsername(username);
+        List<ProjectDTO> projectDTOS = this.projectRepository.findProjectDTOsByUser(user);
+        UserDTO userDTO = new UserDTO(user.getUserID(),user.getUsername(),user.getCreated_date(),projectDTOS);
+
+        return userDTO;
     }
 
     @Override
@@ -52,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean deleteUser(String username) {
         User user = this.userRepository.findByUsername(username);
-        if(user == null) return false;
+        if(user == null) throw new PathVariableNotFound("username");
         try{
             this.userRepository.delete(user);
         }catch(Exception e){

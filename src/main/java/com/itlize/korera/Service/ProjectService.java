@@ -11,7 +11,7 @@ import com.itlize.korera.Entities.User;
 public interface ProjectService {
 
   //create
-  Project addProject(Project project);
+  Project addProject(String username, Project project);
 
   //get
   List<Project> findAllByUserName(String userName);

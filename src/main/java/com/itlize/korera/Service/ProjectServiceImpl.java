@@ -1,8 +1,10 @@
 package com.itlize.korera.Service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.ErrorHandler.PathVariableNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,12 @@ public class ProjectServiceImpl implements ProjectService {
    */
 
   @Override
-  public Project addProject(Project project) {
+  public Project addProject(String username, Project project) {
+    User user = this.userRepository.findByUsername(username);
+    if(user == null) throw new PathVariableNotFound("username");
+    project.setUser(user);
+    project.setDateCreated(new Date());
+    project.setLastModified(new Date());
     return projectRepository.save(project);
   }
   

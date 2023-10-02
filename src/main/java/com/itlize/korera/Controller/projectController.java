@@ -29,9 +29,9 @@ public class projectController {
     this.projectService = projectService;
   }
 
-  @PostMapping("/")
-  public ResponseEntity<String> addProject(@RequestBody Project project) {
-    Project newProject = projectService.addProject(project);
+  @PostMapping("/{username}/add_new_project")
+  public ResponseEntity<String> addProject(@PathVariable("username")String username, @RequestBody Project project) {
+    Project newProject = projectService.addProject(username, project);
     if (newProject != null) {
       return ResponseEntity.ok().body("new project has been saved");
     }

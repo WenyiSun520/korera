@@ -1,6 +1,7 @@
 package com.itlize.korera.Controller;
 
 import com.itlize.korera.Entities.User;
+import com.itlize.korera.Entities.UserDTO;
 import com.itlize.korera.Service.UserServiceImpl;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,20 @@ public class userController {
         this.userService = userService;
     }
 
+//    @GetMapping("/")
+//    public ResponseEntity<List<User>> getAllUser(){
+//        List<User> users = this.userService.getAllUsers();
+//        return ResponseEntity.ok().body(users);
+//    }
+
     @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUser(){
-        List<User> users = this.userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUser(){
+        List<UserDTO> users = this.userService.getAllUsers();
         return ResponseEntity.ok().body(users);
     }
     @GetMapping("/username")
-    public ResponseEntity<User> getUserInfo(@RequestParam(value="username") String username){
-        return ResponseEntity.ok().body(this.userService.getUserProfileByUsername(username));
+    public ResponseEntity<UserDTO> getUserInfo(@RequestParam(value="username") String username){
+        return ResponseEntity.ok().body(this.userService.getUserProfileWithProject(username));
 
     }
     @PostMapping("/submit_user")
@@ -44,9 +51,5 @@ public class userController {
 
        }
         return ResponseEntity.status(404).body("Can't locate the user profile");
-
-
     }
-
-
 }

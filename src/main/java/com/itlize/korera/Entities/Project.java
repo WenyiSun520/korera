@@ -26,9 +26,10 @@ public class Project {
     @Column(name="last_modified")
     private Date lastModified;
 
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name="userid")
-    @JsonIgnore
+    @JsonBackReference
+//    @JsonIgnore
     private User user;
 
 
@@ -50,6 +51,10 @@ public class Project {
         this.lastModified = lastModified;
         this.user = user;
     }
+    public Project(String projectNumber) {
+        this.projectNumber = projectNumber;
+    }
+
 
     public Long getProjectId() {
         return projectId;
@@ -129,3 +134,6 @@ public class Project {
         this.formulas = formulas;
     }
 }
+
+
+
