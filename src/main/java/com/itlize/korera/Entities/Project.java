@@ -28,7 +28,7 @@ public class Project {
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name="userid")
-    @JsonBackReference
+    @JsonManagedReference
 //    @JsonIgnore
     private User user;
 

@@ -1,5 +1,6 @@
 package com.itlize.korera.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -27,7 +28,7 @@ public class User {;
     private Date created_date;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
 //    @JsonIgnore
     private List<Project> projects;
 
