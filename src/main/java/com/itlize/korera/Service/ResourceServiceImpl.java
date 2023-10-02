@@ -49,6 +49,16 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public Set<Resource> getAllResourceByProjectId(Long projectID) {
+        if(!this.projectRepository.existsById(projectID)){
+            throw new PathVariableNotFound("projectID");
+        }
+        Project project = this.projectRepository.getProjectByProjectId(projectID);
+
+        return project.getResources();
+    }
+
+    @Override
     public Set<Resource> getAllSubResourceByParentResource(long resourceID) {
         Resource parentResource = this.resourceRepository.getResourceByResourceID(resourceID);
         if( parentResource == null) throw new PathVariableNotFound("parentResource");
@@ -57,26 +67,44 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Boolean saveNewResource(Resource resource, String username, Long projectId) {
+    public Boolean saveResourceToProject(List<Resource> list, String username, Long projectId) {
         User user = this.userRepository.findByUsername(username);
         Project project = this.projectRepository.getProjectByProjectId(projectId);
 
         if(user == null || project == null) throw new PathVariableNotFound("username or projectId");
-      try {
 
-          resource.setCreated_date(new Date());
-          resource.setLatest_modified_date(new Date());
-          resource.setLatest_modified_by(user);
-          resource.getProject().add(project);
-          project.getResources().add(resource);
+        for(Resource re: list){
+              if(!this.resourceRepository.existsResourceByResourceName(re.getResourceName())){
+               throw new PathVariableNotFound("resource");
+              }
+              Resource resource = this.resourceRepository.getResourceByResourceName(re.getResourceName());
+
+              resource.setLatest_modified_date(new Date());
+              resource.setLatest_modified_by(user);
+              resource.getProject().add(project);
+              project.getResources().add(resource);
+              this.resourceRepository.save(resource);
+        }
           project.setLastModified(new Date());
-         this.resourceRepository.save(resource);
           return true;
-      }catch(Exception e){
-          System.out.println("Error when save new resource: "+e);
 
-      }
-      return false;
+    }
+
+    @Override
+    public Boolean saveNewResource(Resource resource, String username) {
+        User user = this.userRepository.findByUsername(username);
+        if(user == null) throw new PathVariableNotFound("username or projectId");
+        try {
+            resource.setCreated_date(new Date());
+            resource.setLatest_modified_date(new Date());
+            resource.setLatest_modified_by(user);
+            this.resourceRepository.save(resource);
+            return true;
+        }catch(Exception e){
+            System.out.println("Error when save new resource: "+e);
+
+        }
+        return false;
     }
 
     @Override
@@ -119,9 +147,12 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public Boolean updateSubResourceSet(long parentResourceId, Resource subResource, String username){
+        if(!this.resourceRepository.existsById(parentResourceId)) {
+            throw new PathVariableNotFound("parentResourceId");
+        }
         Resource parentResource = this.resourceRepository.getReferenceById(parentResourceId);
         User user = this.userRepository.findByUsername((username));
-        if(user == null || parentResource == null) throw new PathVariableNotFound("username");
+        if(user == null) throw new PathVariableNotFound("username");
         Set<Resource> subResourceSet = parentResource.getSubResourceSet();
         try {
             subResource.setCreated_date(new Date());

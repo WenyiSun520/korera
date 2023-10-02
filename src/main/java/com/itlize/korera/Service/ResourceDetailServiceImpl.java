@@ -62,11 +62,13 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
 
     @Override
     public Boolean addResourceDetail(ResourceDetail resourceDetail, String username, long resourceId) {
-        try {
 
+           if(!this.userRepository.existsUserByUsername(username)|| !this.resourceRepository.existsById(resourceId)){
+               throw new PathVariableNotFound("username or resource");
+           }
+        try {
             User user = this.userRepository.findByUsername(username);
             Resource resource = this.resourceRepository.getResourceByResourceID(resourceId);
-            if(user == null || resource == null) throw new PathVariableNotFound("username or resource");
 
             resourceDetail.setCreated_date(new Date());
             resourceDetail.setLatest_updated(new Date());

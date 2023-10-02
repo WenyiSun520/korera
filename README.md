@@ -13,7 +13,7 @@ Built on the Java Spring framework, this project encompasses six essential entit
 - Formula.
 
 ## Database Diagram
-![databse diagram](./Image/Korera.jpg)
+![databse diagram](./Image/Korera.drawio.png)
 
 
 

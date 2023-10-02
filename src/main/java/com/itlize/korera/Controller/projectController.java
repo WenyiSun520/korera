@@ -49,6 +49,7 @@ public class projectController {
   @GetMapping("/search-by-username")
   public ResponseEntity<List<Project>> getProjectByUserName(@RequestParam(value="userName") String userName) {
     List<Project> projects = projectService.findAllByUserName(userName);
+    System.out.println(projects);
     if (!projects.isEmpty()) {
       // for (Project project: projects) {
       //   project.getFormulas().size(); 

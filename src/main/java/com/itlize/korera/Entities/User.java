@@ -23,7 +23,7 @@ public class User {;
     @Column(name ="lname")
     private String lname;
     @Column(name ="password")
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
     @Column(name ="created_date")
     private Date created_date;

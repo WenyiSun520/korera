@@ -14,12 +14,15 @@ public interface ResourceService {
 
 
    Set<Resource> getAllSubResourceByParentResource(long resourceID);
+   Set<Resource> getAllResourceByProjectId(Long projectID);
    List<Resource> getResourcesByResourceNameContains(String resourceName);
 
 
    Resource getResourceByID(long resourceID);
 
-   Boolean saveNewResource(Resource resource, String username, Long projectId);
+   Boolean saveNewResource(Resource resource, String username);
+
+   Boolean saveResourceToProject(List<Resource> list, String username, Long projectId);
    Boolean updateResourceName(long resourceId, String username, String newname);
    Boolean updateParentResourceId(long resourceId,String username, long parentResourceId);
    Boolean updateSubResourceSet(long parentResourceId, Resource subResource, String username);

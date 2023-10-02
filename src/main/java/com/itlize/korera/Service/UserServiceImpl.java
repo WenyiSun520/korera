@@ -50,14 +50,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserProfileWithProject(String username) {
         User user = this.userRepository.findByUsername(username);
+        if(user == null) throw new PathVariableNotFound("username");
         List<ProjectDTO> projectDTOS = this.projectRepository.findProjectDTOsByUser(user);
         UserDTO userDTO = new UserDTO(user.getUserID(),user.getUsername(),user.getCreated_date(),projectDTOS);
-
         return userDTO;
     }
 
     @Override
     public User getUserProfileByUsername(String username) {
+
         return this.userRepository.findByUsername(username);
     }
 
@@ -73,6 +74,8 @@ public class UserServiceImpl implements UserService {
                 System.out.println("Error when saving new user: " + e);
                 return false;
             }
+        }else{
+            return false;
         }
         return true;
     }
