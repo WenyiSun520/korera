@@ -2,9 +2,12 @@ package com.itlize.korera.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.User;
 import com.itlize.korera.ErrorHandler.PathVariableNotFound;
+import com.itlize.korera.Repositories.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +19,18 @@ import com.itlize.korera.Repositories.UserRepository;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-  @Autowired
+
   private final ProjectRepository projectRepository;
-  @Autowired
+
   private final UserRepository userRepository;
 
-  public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository) {
+  private final ResourceRepository resourceRepository;
+
+  @Autowired
+  public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ResourceRepository resourceRepository) {
     this.projectRepository = projectRepository;
     this.userRepository = userRepository;
+    this.resourceRepository = resourceRepository;
   }
 
   /**
@@ -85,8 +92,12 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public boolean deleteProjectById(long projectId) {
     Project p = projectRepository.findById(projectId).orElse(null);
-    
       if (p != null) {
+        Set<Resource> resourceSet = p.getResources();
+        for(Resource re:resourceSet){
+          re.getProject().remove(p);
+          this.resourceRepository.save(re);
+        }
         projectRepository.delete(p);
         return !projectRepository.existsById(projectId);
       }

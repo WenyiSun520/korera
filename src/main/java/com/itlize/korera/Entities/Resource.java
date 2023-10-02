@@ -1,6 +1,7 @@
 package com.itlize.korera.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.tree.Tree;
@@ -28,13 +29,15 @@ public class Resource {
     @JsonManagedReference("resource-subresource")
     private Set<Resource> subResourceSet = new HashSet<>();
 
-    @OneToMany(mappedBy="resource")
+    @OneToMany(mappedBy="resource",orphanRemoval = true)
     @JsonManagedReference("resource-formula")
     private Set<Formula> formulas;
 
 
-    @OneToMany(mappedBy="resourceId")
-    private Set<ProjectResource> projectResources;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "resources")
+    private Set<Project> project = new HashSet<>();
 
     @Column(name = "created_date")
     private Date created_date;
@@ -128,14 +131,12 @@ public class Resource {
         this.latest_modified_by = latest_modified_by;
     }
 
-    
-
-    public Set<ProjectResource> getProjectResources() {
-        return projectResources;
+    public Set<Project> getProject() {
+        return project;
     }
 
-    public void setProjectResources(Set<ProjectResource> projectResources) {
-        this.projectResources = projectResources;
+    public void setProject(Set<Project> project) {
+        this.project = project;
     }
 
     public Set<Formula> getFormulas() {

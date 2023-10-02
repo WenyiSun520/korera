@@ -1,8 +1,10 @@
 package com.itlize.korera.Service;
 
+import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.User;
 import com.itlize.korera.ErrorHandler.PathVariableNotFound;
+import com.itlize.korera.Repositories.ProjectRepository;
 import com.itlize.korera.Repositories.ResourceRepository;
 import com.itlize.korera.Repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,13 @@ public class ResourceServiceImpl implements ResourceService {
     private final ResourceRepository resourceRepository;
     private final UserRepository userRepository;
 
+    private final ProjectRepository projectRepository;
 
-    public ResourceServiceImpl(ResourceRepository resourceRepository, UserRepository userRepository) {
+
+    public ResourceServiceImpl(ResourceRepository resourceRepository, UserRepository userRepository, ProjectRepository projectRepository) {
         this.resourceRepository = resourceRepository;
         this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
     }
 
 
@@ -52,19 +57,26 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Boolean saveNewResource(Resource resource, String username) {
+    public Boolean saveNewResource(Resource resource, String username, Long projectId) {
         User user = this.userRepository.findByUsername(username);
-        if(user == null) throw new PathVariableNotFound("username");
-        String resourceName = resource.getResourceName();
-        if(this.resourceRepository.existsResourceByResourceName(resourceName)){
-            return false;
-        }else{
-            resource.setCreated_date(new Date());
-            resource.setLatest_modified_date(new Date());
-            resource.setLatest_modified_by(user);
-            this.resourceRepository.save(resource);
-        }
-        return true;
+        Project project = this.projectRepository.getProjectByProjectId(projectId);
+
+        if(user == null || project == null) throw new PathVariableNotFound("username or projectId");
+      try {
+
+          resource.setCreated_date(new Date());
+          resource.setLatest_modified_date(new Date());
+          resource.setLatest_modified_by(user);
+          resource.getProject().add(project);
+          project.getResources().add(resource);
+          project.setLastModified(new Date());
+         this.resourceRepository.save(resource);
+          return true;
+      }catch(Exception e){
+          System.out.println("Error when save new resource: "+e);
+
+      }
+      return false;
     }
 
     @Override
@@ -135,10 +147,13 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Boolean deleteResourceByID(long resourceID) {
+    public Boolean deleteResourceByID(Long projectID, long resourceID) {
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceID);
-        if(resource == null) throw new PathVariableNotFound("resourceID");
+        Project project = this.projectRepository.getProjectByProjectId(projectID);
+        if(resource == null || project == null) throw new PathVariableNotFound("resourceID or projectID");
         try{
+            project.getResources().remove(resource);
+            this.projectRepository.save(project);
             this.resourceRepository.delete(resource);
         }catch(Exception e){
             System.out.println("Error when deleting resource by id: "+e);

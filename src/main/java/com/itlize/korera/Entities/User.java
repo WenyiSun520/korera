@@ -29,7 +29,7 @@ public class User {;
     private Date created_date;
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-   @JsonManagedReference("project-user")
+    @JsonManagedReference("project-user")
     //@JsonBackReference("project-user")
 //    @JsonIgnore
     private List<Project> projects;

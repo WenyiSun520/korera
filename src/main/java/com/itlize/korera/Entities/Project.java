@@ -28,17 +28,21 @@ public class Project {
 
     @ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
     @JoinColumn(name="userid")
-    //@JsonManagedReference("project-user")
     @JsonBackReference("project-user")
-//    @JsonIgnore
     private User user;
 
-
-    @OneToMany(mappedBy="projectId")
-    private Set<ProjectResource> projectResources = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name="project_resource",
+            joinColumns = @JoinColumn(name="resourceID"),
+            inverseJoinColumns = @JoinColumn(name="projectId")
+    )
+   @JsonIgnore
+    private Set<Resource> resources = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    @JsonManagedReference("project-formula")
+   @JsonManagedReference("project-formula")
+    //@JsonIgnore
     private List<Formula> formulas;
 
     public Project() {
@@ -97,12 +101,12 @@ public class Project {
         this.user = user;
     }
 
-    public Set<ProjectResource> getProjectResourceSet( ) {
-        return projectResources;
+    public Set<Resource> getResources() {
+        return resources;
     }
 
-    public void setProjectResourceSet(ProjectResource projectResource) {
-        this.projectResources.add(projectResource);
+    public void setResources(Set<Resource> resources) {
+        this.resources = resources;
     }
 
     // public void setProjectResourceSet(Set<ProjectResource> projectResources) {

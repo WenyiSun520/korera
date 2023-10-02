@@ -49,12 +49,14 @@ public class resourceController {
         return ResponseEntity.ok().body(set);
     }
 
-   @PostMapping("/{username}/add_new_resource")
-    public ResponseEntity<String> addResource(@PathVariable("username") String username, @RequestBody Resource resource)
+   @PostMapping("/{username}/{projectId}/add_new_resource")
+    public ResponseEntity<String> addResource(@PathVariable("username") String username,
+                                              @PathVariable("projectId") Long projectId,
+                                              @RequestBody Resource resource)
                           {
         //System.out.println(resource);
 
-       if(this.resourceService.saveNewResource(resource, username)) {
+       if(this.resourceService.saveNewResource(resource, username, projectId)) {
             return ResponseEntity.ok().body("new resource is saved successfully!");
         }else{
             return ResponseEntity.status(501).body("Server Error when saving new resource!");
@@ -94,9 +96,9 @@ public class resourceController {
        }
 
     }
-   @DeleteMapping("/delete_resource/{resourceID}")
-   public ResponseEntity<String> deleteResource(@PathVariable long resourceID){
-        if( this.resourceService.deleteResourceByID(resourceID)){
+   @DeleteMapping("/delete_resource/{projectID}/{resourceID}")
+   public ResponseEntity<String> deleteResource(@PathVariable Long projectID, @PathVariable long resourceID){
+        if( this.resourceService.deleteResourceByID(projectID,resourceID)){
             return ResponseEntity.ok().body("new resource is deleted successfully!");
         }else{
             return ResponseEntity.status(501).body("Server Error when delete resource. id: "+resourceID);

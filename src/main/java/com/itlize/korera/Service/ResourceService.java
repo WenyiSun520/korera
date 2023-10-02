@@ -19,13 +19,13 @@ public interface ResourceService {
 
    Resource getResourceByID(long resourceID);
 
-   Boolean saveNewResource(Resource resource, String username);
+   Boolean saveNewResource(Resource resource, String username, Long projectId);
    Boolean updateResourceName(long resourceId, String username, String newname);
    Boolean updateParentResourceId(long resourceId,String username, long parentResourceId);
    Boolean updateSubResourceSet(long parentResourceId, Resource subResource, String username);
 
    Boolean deleteResourceByName(String resourceName);
-   Boolean deleteResourceByID(long resourceID);
+   Boolean deleteResourceByID(Long projectID, long resourceID);
 
 
 
