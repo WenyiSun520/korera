@@ -34,7 +34,6 @@ public class Resource {
 
 
     @OneToMany(mappedBy="resourceId")
-
     private Set<ProjectResource> projectResources;
 
     @Column(name = "created_date")
