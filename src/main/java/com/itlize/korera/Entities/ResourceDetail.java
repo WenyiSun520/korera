@@ -16,7 +16,7 @@ public class ResourceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long resourceDetailID;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "resourceid")
     @JsonBackReference("resource-resourcedetail")
     private Resource resource;

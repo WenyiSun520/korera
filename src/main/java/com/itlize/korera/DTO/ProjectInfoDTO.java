@@ -1,4 +1,7 @@
-package com.itlize.korera.Entities;
+package com.itlize.korera.DTO;
+
+import com.itlize.korera.Entities.Formula;
+import com.itlize.korera.Entities.Resource;
 
 import java.util.*;
 

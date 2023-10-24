@@ -1,13 +1,9 @@
 package com.itlize.korera.Repositories;
 
-import com.itlize.korera.Entities.ProjectDTO;
 import com.itlize.korera.Entities.User;
-import com.itlize.korera.Entities.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
 import java.util.List;
 

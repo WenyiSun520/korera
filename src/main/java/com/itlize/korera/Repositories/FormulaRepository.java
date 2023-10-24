@@ -19,5 +19,6 @@ import java.util.List;
 public interface FormulaRepository extends JpaRepository<Formula, Long> {
     List<Formula> findByProject(Project project);
     Formula findByProjectAndFieldNameAndFieldValueAndFieldTypeAndResource(Project project, String fieldName, String value, ColumnTypeEnum type, Resource resource);
-   
+
+    boolean existsFormulasByFormulaId(Long formulaId);
 }

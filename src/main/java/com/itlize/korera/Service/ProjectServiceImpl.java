@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.itlize.korera.DTO.ProjectInfoDTO;
 import com.itlize.korera.Entities.*;
 import com.itlize.korera.ErrorHandler.PathVariableNotFound;
 import com.itlize.korera.Repositories.ResourceRepository;
@@ -57,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
     List<Project> projectList = projectRepository.findAll();
     List<ProjectInfoDTO> resultList = new ArrayList<>();
     for(Project p: projectList){
-      ProjectInfoDTO proj = new ProjectInfoDTO(p.getProjectId(),p.getProjectNumber(),p.getDateCreated(),p.getLastModified(),p.getUser().getUsername(),p.getResources(),p.getFormulas());
+      ProjectInfoDTO proj = new ProjectInfoDTO(p.getProjectId(),p.getProjectName(),p.getDateCreated(),p.getLastModified(),p.getUser().getUsername(),p.getResources(),p.getFormulas());
      resultList.add(proj);
     }
 
@@ -71,7 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public Project getProjectByProjectName(String projectName) {
-    return projectRepository.getProjectByProjectNumber(projectName);
+    return projectRepository.getProjectByProjectName(projectName);
   }
 
   /**
@@ -80,11 +81,11 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public void updateProjectNameByName(String oldProjectName, String newProjectName) {
-    Project project = projectRepository.getProjectByProjectNumber(oldProjectName);
+    Project project = projectRepository.getProjectByProjectName(oldProjectName);
     long projectId = project.getProjectId();
     try {
       if (!projectRepository.existsById(projectId)) {
-        project.setProjectNumber(newProjectName);
+        project.setProjectName(newProjectName);
       }
     } catch (Exception e) {
       System.out.println("You cannot set to this project name, it's already existed");

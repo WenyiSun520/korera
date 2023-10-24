@@ -13,7 +13,6 @@ import java.util.*;
 @Table(name = "RESOURCE")
 public class Resource {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="resourceid")
     private long resourceID;
     @Column(name="resource_name")
@@ -33,10 +32,8 @@ public class Resource {
     @JsonManagedReference("resource-formula")
     private Set<Formula> formulas;
 
-
-
     @JsonIgnore
-    @ManyToMany(mappedBy = "resources")
+    @ManyToMany(mappedBy = "resources",cascade = CascadeType.ALL)
     private Set<Project> project = new HashSet<>();
 
     @Column(name = "created_date")

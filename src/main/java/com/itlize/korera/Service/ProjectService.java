@@ -2,11 +2,10 @@ package com.itlize.korera.Service;
 
 import java.util.List;
 
-import com.itlize.korera.Entities.ProjectInfoDTO;
+import com.itlize.korera.DTO.ProjectInfoDTO;
 import org.springframework.stereotype.Service;
 
 import com.itlize.korera.Entities.Project;
-import com.itlize.korera.Entities.User;
 
 @Service
 public interface ProjectService {

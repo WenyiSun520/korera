@@ -1,30 +1,23 @@
 package com.itlize.korera.Controller;
 
+import com.itlize.korera.DTO.UserDTO;
 import com.itlize.korera.Entities.User;
-import com.itlize.korera.Entities.UserDTO;
 import com.itlize.korera.Service.UserServiceImpl;
-import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
-import java.util.ArrayList;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/user")
-public class userController {
-    private final UserServiceImpl userService;
+public class UserController {
 
-    public userController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
 
-//    @GetMapping("/")
-//    public ResponseEntity<List<User>> getAllUser(){
-//        List<User> users = this.userService.getAllUsers();
-//        return ResponseEntity.ok().body(users);
-//    }
+    @Autowired
+    private UserServiceImpl userService;
+
 
     @GetMapping("/")
     public ResponseEntity<List<UserDTO>> getAllUser(){
@@ -33,7 +26,7 @@ public class userController {
     }
     @GetMapping("/username")
     public ResponseEntity<UserDTO> getUserInfo(@RequestParam(value="username") String username){
-        return ResponseEntity.ok().body(this.userService.getUserProfileWithProject(username));
+        return ResponseEntity.ok().body(this.userService.getUserProfile(username));
 
     }
     @PostMapping("/submit_user")
@@ -46,10 +39,11 @@ public class userController {
     @DeleteMapping("/delete_user/{username}")
     public ResponseEntity<String> deleteUser(@PathVariable String username){
 
-       if(this.userService.deleteUser(username)){
-           return ResponseEntity.status(200).body("Delete user profile successfully: "+ username);
+        if(this.userService.deleteUser(username)){
+            return ResponseEntity.status(200).body("Delete user profile successfully: "+ username);
 
-       }
+        }
         return ResponseEntity.status(404).body("Can't locate the user profile");
     }
+
 }

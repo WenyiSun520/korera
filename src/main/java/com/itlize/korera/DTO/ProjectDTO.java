@@ -1,12 +1,12 @@
-package com.itlize.korera.Entities;
+package com.itlize.korera.DTO;
 
 public class ProjectDTO {
     private Long projectId;
-    private String projectNumber;
+    private String projectName;
 
     public ProjectDTO(Long projectId, String projectNumber) {
         this.projectId = projectId;
-        this.projectNumber = projectNumber;
+        this.projectName = projectNumber;
     }
 
     public Long getProjectId() {
@@ -17,11 +17,11 @@ public class ProjectDTO {
         this.projectId = projectId;
     }
 
-    public String getProjectNumber() {
-        return projectNumber;
+    public String getprojectName() {
+        return projectName;
     }
 
-    public void setProjectNumber(String projectNumber) {
-        this.projectNumber = projectNumber;
+    public void setprojectName(String projectName) {
+        this.projectName = projectName;
     }
 }

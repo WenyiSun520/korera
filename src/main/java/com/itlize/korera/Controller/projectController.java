@@ -1,8 +1,10 @@
 package com.itlize.korera.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.itlize.korera.Entities.ProjectInfoDTO;
+import com.itlize.korera.DTO.ProjectDTO;
+import com.itlize.korera.DTO.ProjectInfoDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.itlize.korera.Entities.Formula;
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Service.ProjectService;
 
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("api/projects")
 public class projectController {
   
   private final ProjectService projectService;
@@ -39,25 +40,27 @@ public class projectController {
     return ResponseEntity.status(501).body("error when saving new project");
   }
 
-  @GetMapping("/projects")
+  @GetMapping("/")
   public ResponseEntity<List<ProjectInfoDTO>> getAllProject() {
     List<ProjectInfoDTO> projects = projectService.getAll();
     return ResponseEntity.ok().body(projects);
   }
 
 
-  @GetMapping("/search-by-username")
-  public ResponseEntity<List<Project>> getProjectByUserName(@RequestParam(value="userName") String userName) {
+  @GetMapping("/search_by_username")
+  public ResponseEntity<?> getProjectByUserName(@RequestParam(value="username") String userName) {
+    List<ProjectDTO> list = new ArrayList<>();
     List<Project> projects = projectService.findAllByUserName(userName);
-    System.out.println(projects);
-    if (!projects.isEmpty()) {
-      // for (Project project: projects) {
-      //   project.getFormulas().size(); 
-      // }
-      return ResponseEntity.ok().body(projects);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+
+//    if (!projects.isEmpty()) {
+      for(Project project: projects){
+        ProjectDTO projectDTO = new ProjectDTO(project.getProjectId(),project.getProjectName());
+        list.add(projectDTO);
+      }
+      return ResponseEntity.ok().body(list);
+//    } else {
+//      return new ResponseEntity<>("You haven't created any projects", HttpStatus.NOT_FOUND);
+//    }
   }
 
   @GetMapping("/{projectName}")
@@ -74,7 +77,7 @@ public class projectController {
   @PutMapping("/{oldProjectName}")
   public ResponseEntity<String> updateProjectName(@PathVariable String oldProjectName, @RequestBody Project project) {
     try {
-      String newProjectName = project.getProjectNumber();
+      String newProjectName = project.getProjectName();
       projectService.updateProjectNameByName(oldProjectName, newProjectName);
       return ResponseEntity.ok().body("updated project name successfully");
     } catch (Exception e) {

@@ -1,8 +1,8 @@
 package com.itlize.korera.Service;
 
-import com.itlize.korera.Entities.ProjectDTO;
+import com.itlize.korera.DTO.ProjectDTO;
+import com.itlize.korera.DTO.UserDTO;
 import com.itlize.korera.Entities.User;
-import com.itlize.korera.Entities.UserDTO;
 import com.itlize.korera.ErrorHandler.PathVariableNotFound;
 import com.itlize.korera.Repositories.ProjectRepository;
 import com.itlize.korera.Repositories.UserRepository;
@@ -35,25 +35,26 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
+    public User findByUsername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
+
+    @Override
     public List<UserDTO> getAllUsers() {
         Iterable<User> allUsers =  this.userRepository.findAll();
         List<UserDTO> users = new ArrayList<>();
         for(User user: allUsers){
-            List<ProjectDTO> projectDTOS = this.projectRepository.findProjectDTOsByUser(user);
-            UserDTO userDTO = new UserDTO(user.getUserID(),user.getUsername(),user.getCreated_date(),projectDTOS);
+            UserDTO userDTO =  new UserDTO(user.getUserID(),user.getUsername(),user.getFname(), user.getLname(),user.getCreated_date());
             users.add(userDTO);
         }
-
         return users;
     }
 
     @Override
-    public UserDTO getUserProfileWithProject(String username) {
+    public UserDTO getUserProfile(String username) {
         User user = this.userRepository.findByUsername(username);
         if(user == null) throw new PathVariableNotFound("username");
-        List<ProjectDTO> projectDTOS = this.projectRepository.findProjectDTOsByUser(user);
-        UserDTO userDTO = new UserDTO(user.getUserID(),user.getUsername(),user.getCreated_date(),projectDTOS);
-        return userDTO;
+        return new UserDTO(user.getUserID(), user.getUsername(),user.getFname(),user.getLname(),user.getCreated_date());
     }
 
     @Override

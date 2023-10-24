@@ -9,7 +9,10 @@ import java.util.List;
 
 @Repository
 public interface ResourceDetailRepository extends JpaRepository<ResourceDetail, Long> {
+
+
     List<ResourceDetail> findResourceDetailsByResource(Resource resource);
+    List<ResourceDetail> findResourceDetailsByDetailName(String detailname);
     ResourceDetail findResourceDetailByResourceDetailID(long resourceDetailId);
     ResourceDetail findResourceDetailByDetailName(String detailName);
 

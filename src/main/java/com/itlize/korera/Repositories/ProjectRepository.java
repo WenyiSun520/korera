@@ -2,11 +2,8 @@ package com.itlize.korera.Repositories;
 
 
 import com.itlize.korera.Entities.Project;
-import com.itlize.korera.Entities.ProjectDTO;
-import com.itlize.korera.Entities.ProjectInfoDTO;
+import com.itlize.korera.DTO.ProjectDTO;
 import com.itlize.korera.Entities.User;
-
-import java.util.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,16 +17,18 @@ import java.util.List;
 @EnableJpaRepositories
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     // find project by name
-    Project getProjectByProjectNumber(String projectName);
+    Project getProjectByProjectName(String projectName);
     Project getProjectByProjectId(Long projectId);
     // List<Project> getAllProjectsByUserName(String userName);
 
-    @Query("SELECT new com.itlize.korera.Entities.ProjectDTO(proj.projectId, proj.projectNumber) " +
+    @Query("SELECT new com.itlize.korera.DTO.ProjectDTO(proj.projectId, proj.projectName) " +
             "FROM Project proj " +
             "WHERE proj.user = :user")
     List<ProjectDTO>  findProjectDTOsByUser(@Param("user") User user);
 
     List<Project> findByUser(User user);
+
+    boolean existsByProjectName(String projectName);
 
     
 }

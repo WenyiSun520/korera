@@ -21,6 +21,7 @@ public interface ResourceRepository extends JpaRepository<Resource,Long> {
 
    Set<Resource> getResourcesByParentResource(Resource parentResource);
 
+
     //bug:
     //void updateResourceBySubResourceList(List<Resource> subResourceList);
 

@@ -12,9 +12,10 @@ public interface ResourceService {
 //   List<Resource> getAllResourceByProjectID(long projectid);
 
 
-
+   Set<Resource> getAllResource();
    Set<Resource> getAllSubResourceByParentResource(long resourceID);
    Set<Resource> getAllResourceByProjectId(Long projectID);
+   Set<Resource> getAllResourceByProjectName(String projectName);
    List<Resource> getResourcesByResourceNameContains(String resourceName);
 
 
@@ -28,7 +29,7 @@ public interface ResourceService {
    Boolean updateSubResourceSet(long parentResourceId, Resource subResource, String username);
 
    Boolean deleteResourceByName(String resourceName);
-   Boolean deleteResourceByID(Long projectID, long resourceID);
+   Boolean deleteResourceByID(long resourceID);
 
 
 

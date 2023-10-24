@@ -17,8 +17,8 @@ public class Project {
     @Column(name="project_id")
     private Long projectId;
 
-    @Column(name="project_number", unique=true)
-    private String projectNumber;
+    @Column(name="project_name", unique=true)
+    private String projectName;
 
     @Column(name="date_created")
     private Date dateCreated;
@@ -34,8 +34,8 @@ public class Project {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name="project_resource",
-            joinColumns = @JoinColumn(name="resourceID"),
-            inverseJoinColumns = @JoinColumn(name="projectId")
+            joinColumns = @JoinColumn(name="projectId"),
+            inverseJoinColumns = @JoinColumn(name="resourceID")
     )
    @JsonIgnore
     private Set<Resource> resources = new HashSet<>();
@@ -50,14 +50,14 @@ public class Project {
     }
 
 
-    public Project(String projectNumber, Date dateCreated, Date lastModified, User user) {
-        this.projectNumber = projectNumber;
+    public Project(String projectName, Date dateCreated, Date lastModified, User user) {
+        this.projectName = projectName;
         this.dateCreated = dateCreated;
         this.lastModified = lastModified;
         this.user = user;
     }
-    public Project(String projectNumber) {
-        this.projectNumber = projectNumber;
+    public Project(String projectName) {
+        this.projectName = projectName;
     }
 
 
@@ -69,12 +69,12 @@ public class Project {
         this.projectId = projectId;
     }
 
-    public String getProjectNumber() {
-        return projectNumber;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProjectNumber(String projectNumber) {
-        this.projectNumber = projectNumber;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public Date getDateCreated() {
@@ -120,7 +120,7 @@ public class Project {
     public String toString() {
         return "Project{" +
                 "projectId=" + projectId +
-                ", projectNumber='" + projectNumber + '\'' +
+                ", projectNumber='" + projectName + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", lastModified=" + lastModified +
                 ", user=" + user +

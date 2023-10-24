@@ -3,18 +3,26 @@ package com.itlize.korera.Entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
+import java.nio.file.FileStore;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "USER")
-public class User {;
+public class User implements UserDetails {;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name ="userid")
     private long userID;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role Role;
 
     @Column(name ="username")
     private String username;
@@ -59,8 +67,40 @@ public class User {;
         this.created_date = created_date;
     }
 
+    public Role getRole() {
+        return Role;
+    }
+
+    public void setRole(Role Role) {
+        this.Role = Role;
+    }
+
     public String getUsername() {
         return username;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(getRole().name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setUsername(String username) {
@@ -90,6 +130,7 @@ public class User {;
     public void setLname(String lname) {
         this.lname = lname;
     }
+
 
     public String getPassword() {
         return password;
@@ -124,6 +165,8 @@ public class User {;
                 ", created_date=" + created_date +
                 '}';
     }
+
+
 }
 
 

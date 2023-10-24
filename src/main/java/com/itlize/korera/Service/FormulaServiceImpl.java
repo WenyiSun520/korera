@@ -1,10 +1,11 @@
 package com.itlize.korera.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
+import com.itlize.korera.Entities.Resource;
+import com.itlize.korera.Repositories.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.itlize.korera.Entities.ColumnTypeEnum;
@@ -20,25 +21,32 @@ public class FormulaServiceImpl implements FormulaService{
 
   @Autowired
   private final ProjectRepository projectRepository;
+
+
+
+  private final ResourceService resourceService;
   
 
-  
-  public FormulaServiceImpl(FormulaRepository formulaRepository, ProjectRepository projectRepository) {
+  @Autowired
+  public FormulaServiceImpl(FormulaRepository formulaRepository, ProjectRepository projectRepository, ResourceService resourceService) {
     this.formulaRepository = formulaRepository;
     this.projectRepository = projectRepository;
+    this.resourceService = resourceService;
   }
 
   @Override
-  public Formula addFormula(Formula formula) {
-    Formula exist = formulaRepository.findByProjectAndFieldNameAndFieldValueAndFieldTypeAndResource(
-      formula.getProject(),
-      formula.getFieldName(), 
-      formula.getFieldValue(), 
-      formula.getFieldType(),
-      formula.getResource());
-    if (exist != null) return exist;
-    return formulaRepository.save(formula);
+  public boolean addFormula(List<Formula> list) {
+//    Long projectId = list.get(0).getProject().getProjectId();
+//    Set<Resource> resourceList = this.resourceService.getAllResourceByProjectId(projectId);
+//    for(Formula formula: list){
+//        for(Resource resource: resourceList ) {
+//          Formula formula1 = new Formula(formula.getFieldName(), formula.getFieldType(), formula.getFieldValue(), formula.getProject(),resource);
+//           this.formulaRepository.save(formula1);
+//        }
+//    }
+    this.formulaRepository.saveAll(list);
 
+    return true;
   }
 
   @Override
@@ -53,7 +61,7 @@ public class FormulaServiceImpl implements FormulaService{
   @Override
   public List<Formula> getAllFormulaByProjectName(String projectName) {
 
-    Project p = projectRepository.getProjectByProjectNumber(projectName);
+    Project p = projectRepository.getProjectByProjectName(projectName);
     return formulaRepository.findByProject(p);
   }
   
@@ -71,7 +79,7 @@ public class FormulaServiceImpl implements FormulaService{
 
   @Override
   public void updateFormulaFieldValue(Formula formula, String value) {
-    formula.setFieldName(value);
+    formula.setFieldValue(value);
     formulaRepository.save(formula);
   }
 

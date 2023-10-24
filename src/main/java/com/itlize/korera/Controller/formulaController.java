@@ -1,7 +1,9 @@
 package com.itlize.korera.Controller;
 
-import java.util.List;
+import java.util.*;
 
+import com.itlize.korera.DTO.FormulaDTO;
+import com.itlize.korera.Entities.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +25,7 @@ import com.itlize.korera.Service.FormulaService;
 import com.itlize.korera.Service.ProjectService;
 
 @RestController
-@RequestMapping("/formula")
+@RequestMapping("api/formula")
 public class formulaController {
 
   private final FormulaService formulaService;
@@ -34,6 +36,11 @@ public class formulaController {
     this.projectService = projectService;
   }
 
+  @GetMapping("/enum-values")
+  public ColumnTypeEnum[] getEnumValues() {
+    return ColumnTypeEnum.values();
+  }
+
   @GetMapping("/formulas")
   public ResponseEntity<List<Formula>> getAll() {
     List<Formula> formulas = formulaService.getAllFormulas();
@@ -41,23 +48,38 @@ public class formulaController {
   }
 
   @GetMapping("/search-by-project")
-  public ResponseEntity<List<Formula>> getAllFormula(@RequestParam(value="projectname") String projectName) {
+  public ResponseEntity<?> getAllFormulaByProjectName(@RequestParam(value="projectname") String projectName) {
     Project project = projectService.getProjectByProjectName(projectName);
     if (project == null) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    List<Formula> formulas = formulaService.getAllFormulaByProjectName(projectName);
-    if (formulas == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    Map<String, List<FormulaDTO>> formulaMap = new HashMap<>();
+    List<Formula> formulas = project.getFormulas();
+    Set<Resource> resources = project.getResources();
+
+    for (Formula formula : formulas) {
+      String type = formula.getFieldName();
+      FormulaDTO formulaDTO = new FormulaDTO(formula.getFormulaId(),formula.getFieldName(),formula.getFieldType(),
+              formula.getFieldValue(),formula.getProject().getProjectId(),formula.getResource().getResourceID());
+      if (!formulaMap.containsKey(type)) {
+        formulaMap.put(type, new ArrayList<>());
+      }
+      formulaMap.get(type).add(formulaDTO);
     }
-    return ResponseEntity.ok().body(formulas);
+    return ResponseEntity.ok().body(formulaMap);
   }
 
-  @PostMapping("/")
+  @GetMapping("get-type/search-by-project")
+  public ResponseEntity<List<String>> getFormulaTypeByProjectName(@RequestParam(value="projectname") String projectName) {
+    Project project = projectService.getProjectByProjectName(projectName);
+    List<Formula> formulas = project.getFormulas();
+    return ResponseEntity.ok().body( formulas.stream().map(Formula::getFieldName).distinct().toList());
+  }
+
+  @PostMapping("/save")
   public ResponseEntity<String> saveFormula(
-      @RequestBody Formula formula) {
-    Formula newFormula = formulaService.addFormula(formula);
-    if (newFormula != null) {
+      @RequestBody List<Formula> formula) {
+    if (formulaService.addFormula(formula)) {
       return ResponseEntity.ok().body("new formula has been added");
     } else {
       return ResponseEntity.status(501).body("error when saving new formula");
@@ -75,16 +97,16 @@ public class formulaController {
     return ResponseEntity.ok().body("formula type has been updated");
   }
 
-  @PutMapping("/update-name/{formulaId}/{fieldName}")
-  public ResponseEntity<String> updateFormulaFieldName(
-      @PathVariable("formulaId") long formulaId, @PathVariable("fieldName") String fieldName) {
-    Formula formula = formulaService.findFormulaById(formulaId);
-    if (formula == null) {
-      return new ResponseEntity<>("formula not found", HttpStatus.NOT_FOUND);
-    }
-    formulaService.updateFormulaFieldName(formula, fieldName);
-    return ResponseEntity.ok().body("formula name has been updated");
-  }
+ //  @PutMapping("/update-name/{formulaId}/{fieldName}")
+//  public ResponseEntity<String> updateFormulaFieldName(
+//      @PathVariable("formulaId") long formulaId, @RequestParam("formula") Formula formula) {
+//
+//    if (formula == null) {
+//      return new ResponseEntity<>("formula not found", HttpStatus.NOT_FOUND);
+//    }
+//    formulaService.updateFormulaFieldName(formula);
+//    return ResponseEntity.ok().body("formula name has been updated");
+//  }
 
   @PutMapping("/update-value/{formulaId}/{fieldValue}")
   public ResponseEntity<String> updateFormulaFieldValue(
@@ -93,7 +115,7 @@ public class formulaController {
     if (formula == null) {
       return new ResponseEntity<>("formula not found", HttpStatus.NOT_FOUND);
     }
-    formulaService.updateFormulaFieldName(formula, fieldValue);
+    formulaService.updateFormulaFieldValue(formula,fieldValue);
     return ResponseEntity.ok().body("formula value has been updated");
   }
 

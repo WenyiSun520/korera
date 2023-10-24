@@ -12,7 +12,7 @@ import com.itlize.korera.Entities.Project;
 public interface FormulaService {
 
   //create
-  Formula addFormula(Formula formula);
+  boolean addFormula(List<Formula> formula);
   
   //get by formulaId
   Formula findFormulaById(long formuaId);
@@ -20,6 +20,7 @@ public interface FormulaService {
   //get all by projectId 
   List<Formula> getAllFormulaByProjectName(String projectName);
   List<Formula> getAllFormulas();
+
 
   //update formula
   // void updateFormula(String fieldName, ColumnTypeEnum type, String fieldValue);

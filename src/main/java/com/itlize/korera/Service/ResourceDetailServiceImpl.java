@@ -1,5 +1,6 @@
 package com.itlize.korera.Service;
 
+import com.itlize.korera.DTO.ResourceDetailDTO;
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Entities.ResourceDetail;
 import com.itlize.korera.Entities.User;
@@ -10,10 +11,9 @@ import com.itlize.korera.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 public class ResourceDetailServiceImpl implements ResourceDetailService{
     private final ResourceRepository resourceRepository;
@@ -43,14 +43,43 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
 
 
     @Override
-    public Set<ResourceDetail> getResourceDetailsByResourceName(String resourceName) {
+    public  List<ResourceDetailDTO> getResourceDetailsByResourceName(String resourceName) {
 
-        Resource resource = this.resourceRepository.getResourceByResourceName(resourceName);
-        if(resource != null){
-            return resource.getResourceDetails();
-        }else{
+       List<Resource> resourceList =  this.resourceRepository.getResourcesByResourceNameContainsIgnoreCase(resourceName);
+        if(resourceList == null) {
             throw new PathVariableNotFound("resource");
         }
+        List<ResourceDetailDTO> result  = new ArrayList<>();
+
+        for(Resource resource: resourceList){
+            Set<ResourceDetail> detailList = resource.getResourceDetails();
+            for(ResourceDetail detail:detailList){
+                ResourceDetailDTO resourceDetailDTO = new ResourceDetailDTO(detail.getResourceDetailID(),detail.getDetailName(),detail.getdetailDescription(),detail.getCreated_date(),detail.getLatest_updated(),detail.getLatest_modified_by().getUsername(), detail.getResource().getResourceID(),detail.getResource().getResourceName());
+                result.add(resourceDetailDTO);
+            }
+
+        }
+       return result;
+
+    }
+    public Set<String> getDistinctDetailTypes() {
+        List<ResourceDetail> detailList = this.resourceDetailRepository.findAll();
+        return detailList.stream()
+                .map(ResourceDetail::getDetailName)
+                .collect(Collectors.toSet());
+    }
+    @Override
+    public List<ResourceDetailDTO> getResourceDetailsByResourceDetailName(String resourceDetailName) {
+        List<ResourceDetail> list = this.resourceDetailRepository.findResourceDetailsByDetailName(resourceDetailName);
+        List<ResourceDetailDTO> result = new ArrayList<>();
+        for(ResourceDetail detail:list){
+            ResourceDetailDTO resourceDetailDTO = new ResourceDetailDTO(detail.getResourceDetailID(),detail.getDetailName(),
+                    detail.getdetailDescription(),detail.getCreated_date(),detail.getLatest_updated(),detail.getLatest_modified_by().getUsername(),
+                    detail.getResource().getResourceID(), detail.getResource().getResourceName());
+            result.add(resourceDetailDTO);
+
+        }
+        return result;
     }
 
     @Override
@@ -109,7 +138,7 @@ public class ResourceDetailServiceImpl implements ResourceDetailService{
                     break;
                 }
             }
-        System.out.println(resourceDetailSet);
+        // System.out.println(resourceDetailSet);
             this.resourceRepository.save(resource);
         }catch(Exception e){
             System.out.println("Error when updating resourceDetail: "+e);

@@ -1,7 +1,10 @@
 package com.itlize.korera.Service;
 
+import com.itlize.korera.DTO.ResourceDTO;
+import com.itlize.korera.DTO.UserDTO;
 import com.itlize.korera.Entities.Project;
 import com.itlize.korera.Entities.Resource;
+import com.itlize.korera.Entities.ResourceDetail;
 import com.itlize.korera.Entities.User;
 import com.itlize.korera.ErrorHandler.PathVariableNotFound;
 import com.itlize.korera.Repositories.ProjectRepository;
@@ -9,9 +12,7 @@ import com.itlize.korera.Repositories.ResourceRepository;
 import com.itlize.korera.Repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -21,7 +22,8 @@ public class ResourceServiceImpl implements ResourceService {
     private final ProjectRepository projectRepository;
 
 
-    public ResourceServiceImpl(ResourceRepository resourceRepository, UserRepository userRepository, ProjectRepository projectRepository) {
+    public ResourceServiceImpl(ResourceRepository resourceRepository, UserRepository userRepository,
+                               ProjectRepository projectRepository) {
         this.resourceRepository = resourceRepository;
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
@@ -34,9 +36,12 @@ public class ResourceServiceImpl implements ResourceService {
 //        return null;
 //    }
 
+    @Override
+    public Set<Resource> getAllResource() {
+        List<Resource> allResourceList =  this.resourceRepository.findAll();
+        Set<Resource> allResourceSet = new HashSet<>(allResourceList);
 
-    public List<Resource> getAllResource() {
-        return this.resourceRepository.findAll();
+       return allResourceSet;
     }
     @Override
     public List<Resource> getResourcesByResourceNameContains(String resourceName) {
@@ -54,6 +59,15 @@ public class ResourceServiceImpl implements ResourceService {
             throw new PathVariableNotFound("projectID");
         }
         Project project = this.projectRepository.getProjectByProjectId(projectID);
+
+        return project.getResources();
+    }
+    @Override
+    public Set<Resource> getAllResourceByProjectName(String projectName) {
+        if(!this.projectRepository.existsByProjectName(projectName)){
+            throw new PathVariableNotFound("projectName");
+        }
+        Project project = this.projectRepository.getProjectByProjectName(projectName);
 
         return project.getResources();
     }
@@ -93,8 +107,10 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public Boolean saveNewResource(Resource resource, String username) {
         User user = this.userRepository.findByUsername(username);
+        System.out.println("in reosurceserviceimpl:"+resource.getResourceID());
         if(user == null) throw new PathVariableNotFound("username or projectId");
         try {
+            resource.setResourceID(resource.getResourceID());
             resource.setCreated_date(new Date());
             resource.setLatest_modified_date(new Date());
             resource.setLatest_modified_by(user);
@@ -178,13 +194,21 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public Boolean deleteResourceByID(Long projectID, long resourceID) {
+    public Boolean deleteResourceByID(long resourceID) {
         Resource resource = this.resourceRepository.getResourceByResourceID(resourceID);
-        Project project = this.projectRepository.getProjectByProjectId(projectID);
-        if(resource == null || project == null) throw new PathVariableNotFound("resourceID or projectID");
+
+       // Project project = this.projectRepository.getProjectByProjectId(projectID);
+     //   if(resource == null || project == null) throw new PathVariableNotFound("resourceID or projectID");
         try{
-            project.getResources().remove(resource);
-            this.projectRepository.save(project);
+            if(resource.getResourceDetails().size() != 0){
+                for(ResourceDetail resourceDetail:resource.getResourceDetails() ){
+                    resourceDetail.setLatest_modified_by(null);
+                }
+            }
+            resource.setLatest_modified_by(null);
+            System.out.println(resource);
+       //     project.getResources().remove(resource);
+        //    this.projectRepository.save(project)
             this.resourceRepository.delete(resource);
         }catch(Exception e){
             System.out.println("Error when deleting resource by id: "+e);
