@@ -5,6 +5,8 @@ import java.util.Set;
 
 import com.itlize.korera.Entities.Resource;
 import com.itlize.korera.Repositories.ResourceRepository;
+import io.micrometer.observation.annotation.Observed;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +100,15 @@ public class FormulaServiceImpl implements FormulaService{
     formulaRepository.delete(formulaRepository.findById(formulaId).orElse(null));
     
     return true;
+  }
+
+  @Override
+  @Transactional
+  public boolean deleteFormulasByFieldName(String name, Long projectId){
+    Project project = this.projectRepository.getProjectByProjectId(projectId);
+    if(project == null) return false;
+
+   return this.formulaRepository.deleteFormulasByFieldNameAndAndProject(name, project) != -1;
   }
 
   

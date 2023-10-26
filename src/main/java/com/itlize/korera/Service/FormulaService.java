@@ -29,8 +29,11 @@ public interface FormulaService {
   void updateFormulaFieldValue(Formula formula, String value);
 
 
+
   //delete formula 
   boolean deleteFormulaById(long formulaId);
+
+  boolean deleteFormulasByFieldName(String name,Long projectId);
 
   
 }

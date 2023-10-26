@@ -128,4 +128,15 @@ public class formulaController {
     
   }
 
+  @DeleteMapping("/{projectId}/{formulaName}")
+  public ResponseEntity<String> deleteFormulaByName(@PathVariable("projectId") Long projectId, @PathVariable("formulaName") String formulaName) {
+
+    if (formulaService.deleteFormulasByFieldName(formulaName, projectId)) {
+      return ResponseEntity.ok().body("formula has been deleted");
+    }
+    return new ResponseEntity<>("Formula not found", HttpStatus.NOT_FOUND);
+
+  }
+
+
 }

@@ -21,4 +21,9 @@ public interface FormulaRepository extends JpaRepository<Formula, Long> {
     Formula findByProjectAndFieldNameAndFieldValueAndFieldTypeAndResource(Project project, String fieldName, String value, ColumnTypeEnum type, Resource resource);
 
     boolean existsFormulasByFormulaId(Long formulaId);
+    Integer deleteFormulasByFieldNameAndAndProject(String name, Project project);
+    Integer deleteFormulasByResourceAndProject(Resource resource, Project project);
+ //  List<Formula> findFormulasByFieldNameAndAndProject(String name, Project project);
+ //  List<Formula> findFormulasByProjectAndResource(Project project, Resource resource);
+
 }

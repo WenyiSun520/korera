@@ -27,7 +27,7 @@ public class ResourceDetail {
 
     private Date created_date;
     private Date latest_updated;
-    @ManyToOne
+    @ManyToOne( cascade = CascadeType.REMOVE)
     @JoinColumn(name = "latest_modified_user_id")
     private User latest_modified_by;
 

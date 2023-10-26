@@ -1,14 +1,13 @@
 package com.itlize.korera.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.itlize.korera.DTO.ProjectInfoDTO;
 import com.itlize.korera.Entities.*;
 import com.itlize.korera.ErrorHandler.PathVariableNotFound;
+import com.itlize.korera.Repositories.FormulaRepository;
 import com.itlize.korera.Repositories.ResourceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +25,14 @@ public class ProjectServiceImpl implements ProjectService {
 
   private final ResourceRepository resourceRepository;
 
+  private final FormulaRepository formulaRepository;
+
   @Autowired
-  public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ResourceRepository resourceRepository) {
+  public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ResourceRepository resourceRepository, FormulaRepository formulaRepository) {
     this.projectRepository = projectRepository;
     this.userRepository = userRepository;
     this.resourceRepository = resourceRepository;
+    this.formulaRepository = formulaRepository;
   }
 
   /**
@@ -110,6 +112,34 @@ public class ProjectServiceImpl implements ProjectService {
         return !projectRepository.existsById(projectId);
       }
       return false;
+
+  }
+  @Override
+  @Transactional
+  public void removeResourcesFromProject(Long projectId, long[] resourceIdList){
+    Project project = this.projectRepository.getProjectByProjectId(projectId);
+
+    Set<Resource> projectResources = project.getResources();
+
+    Set<Resource> set = new HashSet<>();
+    for(Long id: resourceIdList){
+
+      Resource resource = this.resourceRepository.getResourceByResourceID(id);
+      Integer number = this.formulaRepository.deleteFormulasByResourceAndProject(resource,project);
+      System.out.println("The number of removed formula: "+ number);
+      set.add(resource);
+    }
+
+    if(projectResources.removeAll(set)){
+      project.setResources(projectResources);
+      this.projectRepository.save(project);
+    }else{
+      System.out.println("Error when removing resource");
+    }
+
+
+
+
 
   }
 }

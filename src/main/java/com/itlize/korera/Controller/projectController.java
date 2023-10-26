@@ -1,6 +1,7 @@
 package com.itlize.korera.Controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.itlize.korera.DTO.ProjectDTO;
@@ -81,6 +82,18 @@ public class projectController {
       projectService.updateProjectNameByName(oldProjectName, newProjectName);
       return ResponseEntity.ok().body("updated project name successfully");
     } catch (Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PutMapping("/updateProject/{projectId}")
+  public ResponseEntity<String> updateProjectResources(@PathVariable Long projectId, @RequestBody long[] resourceIdList) {
+    try {
+      System.out.println(Arrays.toString(resourceIdList));
+      this.projectService.removeResourcesFromProject(projectId,resourceIdList);
+        return ResponseEntity.ok().body("updated project name successfully");
+    } catch (Exception e) {
+      System.out.println(e);
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
   }

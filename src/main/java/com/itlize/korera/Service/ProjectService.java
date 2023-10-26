@@ -23,4 +23,6 @@ public interface ProjectService {
 
   //delete
   boolean deleteProjectById(long projectId);
+
+  void removeResourcesFromProject(Long projectId, long[] resourceIdList);
 }
